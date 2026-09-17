@@ -13,6 +13,14 @@
 ### 待办 / 已知问题
 - （无，已知问题均已在本版清理）
 
+## [1.0.1] - 2026-09-17
+
+维护版（patch）：收尾清理，无功能变更。
+
+### Removed
+- 删除冗余且损坏的 `web/Dockerfile`（引用不存在的 `nginx.conf`；实际构建统一走根 `Dockerfile`，compose 与文档均未引用该文件）。
+- 清理 `web/src/data/screenshots.ts` 中未被引用的导出常量（`screenshotTable` / `screenshotSummary` / `requiredScreenshotFiles` / `skippedScreenshotFiles` / `optionalScreenshotFiles`）。
+
 ## [1.0.0] - 2026-09-17
 
 首个对外发布的官网版本。
@@ -26,14 +34,6 @@
 ### Changed
 - 目录结构与部署说明随实际代码更新。
 - 界面截图改为仓库内自托管：16 张 jpg 落地到 `web/public/screens/`（`01-dashboard.jpg` … `16-remote.jpg`），`index.json` 由 GitHub raw 外链改为本地文件名，`index.html` 的 `og:` / `twitter:` 封面图改指本地 `/screens/01-dashboard.jpg`，移除对 `raw.githubusercontent.com` 的依赖。
-
-## [1.0.1] - 2026-09-17
-
-维护版（patch）：收尾清理，无功能变更。
-
-### Removed
-- 删除冗余且损坏的 `web/Dockerfile`（引用不存在的 `nginx.conf`；实际构建统一走根 `Dockerfile`，compose 与文档均未引用该文件）。
-- 清理 `web/src/data/screenshots.ts` 中未被引用的导出常量（`screenshotTable` / `screenshotSummary` / `requiredScreenshotFiles` / `skippedScreenshotFiles` / `optionalScreenshotFiles`）。
 
 ## [0.1.0] - 2026-09-17
 
