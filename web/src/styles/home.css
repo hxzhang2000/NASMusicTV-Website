@@ -249,9 +249,16 @@
 
 .tv-hero-actions {
   display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
+  flex-wrap: nowrap;
+  gap: 12px;
   margin-top: 36px;
+}
+
+/* Hero 区域按钮缩小版 */
+.tv-hero-actions .tv-btn {
+  padding: 10px 20px;
+  font-size: 14px;
+  gap: 8px;
 }
 
 .tv-hero-note {

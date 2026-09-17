@@ -47,37 +47,37 @@ export const highlights: Highlight[] = [
   {
     key: "multi-source",
     title: "多源聚合播放",
-    desc: "NAS（Jellyfin / Navidrome / Subsonic / 道理鱼 / 飞牛）+ 本地 + 网络 + 百度网盘 + Jamendo 并行搜索、合并去重，按来源优先级排序。",
+    desc: "NAS / 本地 / 网络 / 百度网盘 / Jamendo 并行搜索，合并去重，按来源排序。",
     icon: <CloudServerOutlined />,
   },
   {
     key: "karaoke-lyric",
     title: "逐字卡拉OK歌词",
-    desc: "逐行滚动 + 逐字变色高亮，平滑过渡适配电视大屏；支持内嵌 / 本地 / 网络多来源获取与本地缓存，二次播放零网络请求。",
+    desc: "逐字变色高亮，平滑适配电视大屏；多来源获取，本地缓存零网络请求。",
     icon: <CustomerServiceOutlined />,
   },
   {
     key: "karaoke",
     title: "K 歌伴奏模式",
-    desc: "实时分离人声与伴奏，K 歌时背景音乐完整不塌方；全屏沉浸 K 歌页双行歌词逐字推进，随时原唱 / 伴奏切换，配合升降调与播放速度。",
+    desc: "实时人声分离，背景音乐完整不塌方；随时原唱/伴奏切换。",
     icon: <PlayCircleOutlined />,
   },
   {
     key: "mtv",
     title: "MTV 音乐视频",
-    desc: "播放页一键进入全屏视频页，切歌时后台自动搜索 B 站 MV，搜到即自动播放，未搜到按钮自动置暗，绝不打断听歌。",
+    desc: "一键全屏播放 B 站 MV，搜到自动播放，未搜到自动置暗。",
     icon: <DesktopOutlined />,
   },
   {
     key: "weather-radio",
     title: "天气电台",
-    desc: "根据实时天气（晴 / 雨 / 雪 / 风 / 阴 / 夜晚）自动从 NAS 曲库与网络歌曲匹配心情电台，双源天气自动切换，附带未来 5 天预报。",
+    desc: "根据实时天气自动匹配心情电台，双源天气切换，支持 5 天预报。",
     icon: <CloudOutlined />,
   },
   {
     key: "dual-device",
     title: "一部 APK 双端适配",
-    desc: "运行时检测设备类型：电视走顶部导航 + 遥控器焦点体系，手机走底部导航 + MiniPlayer 迷你播放条，互不影响。",
+    desc: "电视走遥控器焦点，手机走触屏与 MiniPlayer，互不影响。",
     icon: <MobileOutlined />,
   },
 ];
