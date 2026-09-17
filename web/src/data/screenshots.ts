@@ -244,30 +244,3 @@ export const allScreenshotFiles: string[] = Array.from(
   ])
 );
 
-/** 截图清单表（界面预览页底部展示） */
-export const screenshotTable = Object.entries(screenShots).map(([name, shot]) => ({
-  name,
-  ...shot,
-}));
-
-/** 必需文件：16 张界面截图（本轮已全部收齐） */
-export const requiredScreenshotFiles: string[] = Object.values(screenShots).map((s) => s.file);
-
-/** 本轮明确不再单独提供的文件（主视觉、分享封面）——缺失不计入「待补」 */
-export const skippedScreenshotFiles: string[] = [heroShot.file, shareCover.file];
-
-/** 可选文件（手机版截图，提供后卡片右上角出现 TV / 手机 切换；本轮未提供） */
-export const optionalScreenshotFiles: string[] = Object.values(screenShots)
-  .map((s) => s.mobileFile)
-  .filter((f): f is string => typeof f === "string");
-
-export const screenshotSummary = {
-  /** 全部截图位（含已取消的两个与可选手机版） */
-  total: allScreenshotFiles.length,
-  /** 必需：16 张界面截图 */
-  required: requiredScreenshotFiles.length,
-  /** 可选：手机版截图 */
-  optional: optionalScreenshotFiles.length,
-  /** 已取消单独提供：主视觉 + 分享封面（自动复用首页截图） */
-  skipped: skippedScreenshotFiles.length,
-};
