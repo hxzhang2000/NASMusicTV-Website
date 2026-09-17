@@ -63,6 +63,12 @@ export const highlights: Highlight[] = [
     icon: <PlayCircleOutlined />,
   },
   {
+    key: "visualizer",
+    title: "可视化特效库",
+    desc: "20+ 套全屏特效：数学曲线、棱镜彩虹、极光星空、歌词点阵，遥控器即时切换。",
+    icon: <PictureOutlined />,
+  },
+  {
     key: "mtv",
     title: "MTV 音乐视频",
     desc: "一键全屏播放 B 站 MV，搜到自动播放，未搜到自动置暗。",
@@ -73,6 +79,12 @@ export const highlights: Highlight[] = [
     title: "天气电台",
     desc: "根据实时天气自动匹配心情电台，双源天气切换，支持 5 天预报。",
     icon: <CloudOutlined />,
+  },
+  {
+    key: "phone-remote",
+    title: "手机扫码遥控",
+    desc: "K 歌/MTV 全屏页显示二维码，手机扫码即可遥控队列与搜索添加歌曲。",
+    icon: <MobileOutlined />,
   },
   {
     key: "dual-device",
