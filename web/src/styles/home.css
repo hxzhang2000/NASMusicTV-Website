@@ -1,0 +1,1315 @@
+/* ==========================================================================
+   首页 · TV 大屏沉浸设计系统
+   --------------------------------------------------------------------------
+   【美化要点 · 设计系统】
+   - 色彩：背景 #0A0E14 / 卡片 #141A24 / 悬浮 #1C2433；
+           品牌青绿 #00D4AA（按钮、焦点态、进度条、标签高亮）；
+           辅助紫 #7B61FF（渐变强调）、暖黄 #FFB800（K 歌歌词高亮）。
+   - 文字层级：#FFFFFF 标题 / #C8D0DA 正文 / #7E8EA5 次要（原 #6B7A8F 在 #0A0E14 上
+           对比度仅 4.39:1，未达 WCAG AA，微调为 #7E8EA5 → 5.76:1）。
+   - 字体：Inter / SF Pro Display 标题（700）；数字与标签用 JetBrains Mono / SF Mono。
+   - 间距：8px 基准，卡片内边距 24–32px，区块间距 80–120px（--tv-section）。
+   - 圆角：卡片 16px，胶囊按钮 999px，大屏焦点态 20px。
+   - 阴影：卡片 0 4px 24px rgba(0,0,0,.4)；焦点 0 0 0 2px #00D4AA + 0 8px 32px rgba(0,212,170,.2)。
+   - 作用域：全部变量与类名收敛在 .tv-home 之下，不影响 /features、/screens 等其它页面。
+   ========================================================================== */
+
+.tv-home {
+  /* —— 色板 —— */
+  --tv-bg: #0a0e14;
+  --tv-bg-deep: #05070c;
+  --tv-card: #141a24;
+  --tv-card-hover: #1c2433;
+  --tv-brand: #00d4aa;
+  --tv-brand-ink: #05201a;
+  --tv-purple: #7b61ff;
+  --tv-yellow: #ffb800;
+  --tv-title: #ffffff;
+  --tv-text: #c8d0da;
+  --tv-dim: #7e8ea5;
+  --tv-border: rgba(255, 255, 255, 0.06);
+  --tv-border-strong: rgba(255, 255, 255, 0.12);
+
+  /* —— 圆角 / 间距 / 阴影 —— */
+  --tv-radius: 16px;
+  --tv-radius-lg: 20px;
+  --tv-unit: 8px;
+  --tv-section: 104px;
+  --tv-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --tv-shadow-lg: 0 18px 48px rgba(0, 0, 0, 0.55);
+  --tv-shadow-focus: 0 0 0 2px var(--tv-brand), 0 8px 32px rgba(0, 212, 170, 0.2);
+
+  /* —— 字体 —— */
+  --tv-font: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Roboto, "Helvetica Neue", Arial,
+    sans-serif;
+  --tv-mono: "JetBrains Mono", "SF Mono", ui-monospace, SFMono-Regular, Consolas, Menlo,
+    monospace;
+
+  position: relative;
+  color: var(--tv-text);
+  font-family: var(--tv-font);
+  /* 背景交由 body（#0A0E14）承载，保留全站环境光晕透过；本容器不再叠加实色 */
+  background: transparent;
+}
+
+.tv-home .tv-section {
+  position: relative;
+  padding: var(--tv-section) 0;
+}
+
+/* 区块标题体系：小标签（等宽）→ 大标题 → 说明，强化层次对比 */
+.tv-eyebrow {
+  display: inline-block;
+  margin-bottom: 14px;
+  font-family: var(--tv-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--tv-brand);
+}
+
+.tv-home-head {
+  max-width: 760px;
+  margin-bottom: 56px;
+}
+
+.tv-h2 {
+  font-size: clamp(28px, 3.2vw, 42px);
+  font-weight: 700;
+  line-height: 1.22;
+  letter-spacing: -0.4px;
+  color: var(--tv-title);
+}
+
+.tv-h2 .tv-accent {
+  color: var(--tv-brand);
+}
+
+.tv-lead {
+  margin-top: 20px;
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--tv-text);
+}
+
+/* ==========================================================================
+   1. Hero —— 全屏高度 + 模糊光晕 + 浮动光点粒子
+   ========================================================================== */
+.tv-hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  padding: 132px 0 88px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* 封面滤镜式光晕：大范围 blur 的径向渐变，静态渲染不参与动画，避免重排 */
+.tv-hero-glow {
+  position: absolute;
+  inset: -18% -8% -10%;
+  z-index: -3;
+  pointer-events: none;
+  filter: blur(90px);
+  opacity: 0.75;
+  background:
+    radial-gradient(38% 46% at 16% 28%, rgba(0, 212, 170, 0.3), transparent 72%),
+    radial-gradient(34% 42% at 82% 16%, rgba(123, 97, 255, 0.3), transparent 72%),
+    radial-gradient(30% 38% at 58% 88%, rgba(255, 184, 0, 0.12), transparent 74%);
+}
+
+/* 极淡网格纹理（大屏质感），用 mask 让四周自然消散 */
+.tv-grid-texture {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(75% 62% at 50% 38%, #000 25%, transparent 100%);
+  mask-image: radial-gradient(75% 62% at 50% 38%, #000 25%, transparent 100%);
+}
+
+/* 浮动光点粒子：只用 transform 动画 + will-change，走 GPU 合成层 */
+.tv-particles {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.tv-particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 212, 170, 0.95), rgba(0, 212, 170, 0) 70%);
+  opacity: 0.45;
+  will-change: transform;
+  animation: tv-float 20s ease-in-out infinite;
+}
+
+.tv-particle.is-purple {
+  background: radial-gradient(circle, rgba(123, 97, 255, 0.95), rgba(123, 97, 255, 0) 70%);
+}
+
+@keyframes tv-float {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(20px, -52px, 0) scale(1.3);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.tv-hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  gap: 64px;
+  align-items: center;
+  width: 100%;
+}
+
+.tv-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 26px;
+}
+
+.tv-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--tv-text);
+  background: rgba(20, 26, 36, 0.85);
+  border: 1px solid var(--tv-border-strong);
+}
+
+.tv-pill.is-brand {
+  color: var(--tv-brand);
+  border-color: rgba(0, 212, 170, 0.42);
+  background: rgba(0, 212, 170, 0.12);
+}
+
+/* 产品名：64–72px 超大标题 */
+.tv-hero-brand {
+  font-size: clamp(38px, 6.4vw, 72px);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -1.5px;
+  background: linear-gradient(96deg, #ffffff 8%, #9ef3e0 52%, var(--tv-brand) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* 主标题（保留原 slogan 语义，不再用 <br> 硬换行，交给排版自动折行） */
+.tv-hero-title {
+  margin-top: 16px;
+  font-size: clamp(26px, 3.1vw, 44px);
+  font-weight: 700;
+  line-height: 1.24;
+  letter-spacing: -0.3px;
+  color: var(--tv-title);
+}
+
+.tv-hero-lead {
+  margin-top: 22px;
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 1.6;
+  color: var(--tv-text);
+  /* 一句话介绍限制在 2 行内 */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.tv-hero-sub {
+  margin-top: 12px;
+  max-width: 620px;
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--tv-dim);
+}
+
+.tv-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 36px;
+}
+
+.tv-hero-note {
+  margin-top: 22px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--tv-dim);
+}
+
+/* —— 按钮：胶囊 + 夸张焦点态（呼应 TV 端 D-Pad 焦点逻辑） —— */
+.tv-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 28px;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease,
+    border-color 0.25s ease, filter 0.25s ease;
+}
+
+.tv-btn-primary {
+  color: var(--tv-brand-ink);
+  background: var(--tv-brand);
+  box-shadow: 0 10px 30px rgba(0, 212, 170, 0.28);
+}
+
+.tv-btn-primary:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 2px var(--tv-brand), 0 12px 36px rgba(0, 212, 170, 0.4);
+}
+
+.tv-btn-ghost {
+  color: var(--tv-brand);
+  border: 1px solid rgba(0, 212, 170, 0.45);
+  background: rgba(0, 212, 170, 0.04);
+}
+
+.tv-btn-ghost:hover {
+  background: rgba(0, 212, 170, 0.12);
+  border-color: var(--tv-brand);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 26px rgba(0, 212, 170, 0.18);
+}
+
+/* 键盘 Tab 焦点：2px 青绿 outline + 放大，任何可交互元素都可见 */
+.tv-home a:focus-visible,
+.tv-home button:focus-visible {
+  outline: 2px solid var(--tv-brand);
+  outline-offset: 3px;
+  border-radius: 999px;
+}
+
+/* —— Hero 电视屏幕主视觉：深色外框 + 16:9 屏 + 呼吸发光 —— */
+.tv-hero-screen {
+  position: relative;
+}
+
+.tv-frame {
+  position: relative;
+  padding: 12px;
+  border-radius: 24px;
+  background: linear-gradient(160deg, #10161f 0%, #05070c 100%);
+  border: 1px solid var(--tv-border-strong);
+  box-shadow: var(--tv-shadow-lg), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.tv-frame-inner {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--tv-radius-lg);
+  background: var(--tv-bg-deep);
+  aspect-ratio: 16 / 9;
+}
+
+.tv-frame-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 屏幕发光「呼吸」感
+   【美化要点 · 性能】只用 opacity 做动画（合成层属性），并加 will-change: opacity；
+   不使用 box-shadow 关键帧动画，避免每帧重绘导致掉帧与 Lighthouse 扣分。 */
+.tv-breathe {
+  position: relative;
+}
+
+.tv-breathe::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 26px;
+  pointer-events: none;
+  opacity: 0;
+  will-change: opacity;
+  box-shadow: 0 0 46px 2px rgba(0, 212, 170, 0.3);
+  animation: tv-breathe 7s ease-in-out infinite;
+}
+
+@keyframes tv-breathe {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.tv-stand {
+  width: 34%;
+  height: 10px;
+  margin: 0 auto;
+  border-radius: 0 0 12px 12px;
+  background: linear-gradient(180deg, #10161f, #05070c);
+  border: 1px solid var(--tv-border);
+  border-top: none;
+}
+
+/* ==========================================================================
+   2. 统计数字 —— 大号等宽字体
+   ========================================================================== */
+.tv-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.tv-stat {
+  padding: 30px 26px;
+  border-radius: var(--tv-radius);
+  background: var(--tv-card);
+  border: 1px solid var(--tv-border);
+  box-shadow: var(--tv-shadow);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease,
+    background-color 0.25s ease;
+}
+
+.tv-stat:hover {
+  transform: translateY(-4px);
+  background: var(--tv-card-hover);
+  border-color: var(--tv-brand);
+  box-shadow: var(--tv-shadow-focus);
+}
+
+.tv-stat-value {
+  font-family: var(--tv-mono);
+  font-size: clamp(34px, 3.6vw, 46px);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--tv-brand);
+}
+
+.tv-stat-label {
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--tv-text);
+}
+
+/* ==========================================================================
+   3. 通用卡片 + Highlights 四列网格
+   ========================================================================== */
+.tv-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.tv-grid-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.tv-card {
+  position: relative;
+  padding: 32px 28px;
+  border-radius: var(--tv-radius);
+  background: var(--tv-card);
+  border: 1px solid var(--tv-border);
+  box-shadow: var(--tv-shadow);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease,
+    background-color 0.25s ease;
+}
+
+.tv-card:hover,
+.tv-card:focus-within {
+  transform: translateY(-4px);
+  background: var(--tv-card-hover);
+  border-color: var(--tv-brand);
+  box-shadow: var(--tv-shadow-focus);
+}
+
+.tv-card-icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 20px;
+  border-radius: 16px;
+  color: var(--tv-brand);
+  background: rgba(0, 212, 170, 0.1);
+  border: 1px solid rgba(0, 212, 170, 0.26);
+}
+
+.tv-card-title {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--tv-title);
+}
+
+.tv-card-desc {
+  margin-top: 12px;
+  font-size: 15px;
+  line-height: 1.72;
+  color: var(--tv-text);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   4. Features —— 三列卡片瀑布流（每卡 图标 + 标题 + 两行描述）
+   ========================================================================== */
+.tv-features {
+  position: relative;
+}
+
+.tv-features::before {
+  content: "";
+  position: absolute;
+  inset: -40px -40px 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 48px 48px;
+  -webkit-mask-image: radial-gradient(70% 70% at 50% 40%, #000 10%, transparent 100%);
+  mask-image: radial-gradient(70% 70% at 50% 40%, #000 10%, transparent 100%);
+}
+
+.tv-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.tv-feature {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  padding: 26px 24px;
+  border-radius: var(--tv-radius);
+  background: var(--tv-card);
+  border: 1px solid var(--tv-border);
+  box-shadow: var(--tv-shadow);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease,
+    background-color 0.25s ease;
+}
+
+.tv-feature:hover,
+.tv-feature:focus-within {
+  transform: translateY(-4px);
+  background: var(--tv-card-hover);
+  border-color: var(--tv-brand);
+  box-shadow: var(--tv-shadow-focus);
+}
+
+.tv-feature-icon {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  color: var(--tv-brand);
+  background: rgba(0, 212, 170, 0.1);
+  border: 1px solid rgba(0, 212, 170, 0.22);
+}
+
+.tv-feature-title {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--tv-title);
+}
+
+.tv-feature-desc {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--tv-dim);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.tv-more {
+  margin-top: 40px;
+}
+
+/* ==========================================================================
+   5. Screens —— CSS 绘制的 TV 界面 mockup（16:9）
+   ========================================================================== */
+.tv-screens {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.tv-screen-card {
+  border-radius: var(--tv-radius-lg);
+  background: var(--tv-card);
+  border: 1px solid var(--tv-border);
+  box-shadow: var(--tv-shadow);
+  overflow: hidden;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.tv-screen-card:hover,
+.tv-screen-card:focus-within {
+  transform: translateY(-4px);
+  border-color: var(--tv-brand);
+  box-shadow: var(--tv-shadow-focus);
+}
+
+.tv-screen-frame {
+  position: relative;
+  padding: 14px;
+  background: linear-gradient(160deg, #0f151e, #05070c);
+  border-bottom: 1px solid var(--tv-border);
+}
+
+.tv-screen-16x9 {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  aspect-ratio: 16 / 9;
+  background: var(--tv-bg-deep);
+}
+
+.tv-screen-16x9 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 「呼吸」光效：暗示电视屏幕的发光感
+   【美化要点 · 性能】同样是 opacity 动画（合成层），静态阴影一次绘制，动画只改透明度 */
+.tv-screen-16x9::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0.12;
+  will-change: opacity;
+  box-shadow: inset 0 0 0 1px rgba(0, 212, 170, 0.32), inset 0 0 32px rgba(0, 212, 170, 0.1);
+  animation: tv-screen-glow 8s ease-in-out infinite;
+}
+
+@keyframes tv-screen-glow {
+  0%,
+  100% {
+    opacity: 0.12;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.tv-screen-toggle {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  z-index: 3;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-family: var(--tv-font);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--tv-text);
+  background: rgba(5, 7, 12, 0.78);
+  border: 1px solid var(--tv-border-strong);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.tv-screen-toggle:hover {
+  color: var(--tv-brand);
+  border-color: var(--tv-brand);
+}
+
+.tv-screen-body {
+  padding: 24px 26px 26px;
+}
+
+.tv-screen-name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--tv-title);
+}
+
+.tv-tag {
+  flex-shrink: 0;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-family: var(--tv-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+  color: var(--tv-brand);
+  background: rgba(0, 212, 170, 0.12);
+  border: 1px solid rgba(0, 212, 170, 0.32);
+}
+
+.tv-screen-desc {
+  margin-top: 12px;
+  font-size: 14.5px;
+  line-height: 1.72;
+  color: var(--tv-text);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 一行小字：该界面的核心交互（呼应 D-Pad 操作） */
+.tv-screen-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+  font-family: var(--tv-mono);
+  font-size: 12px;
+  letter-spacing: 0.2px;
+  color: var(--tv-brand);
+}
+
+/* --------------------------------------------------------------------------
+   mockup 内部原子元素（纯 CSS 绘制，无图片请求；容器统一 aria-hidden）
+   -------------------------------------------------------------------------- */
+.mk {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4%;
+  padding: 5% 5.5%;
+  background:
+    radial-gradient(60% 70% at 12% 0%, rgba(0, 212, 170, 0.1), transparent 70%),
+    radial-gradient(55% 65% at 92% 8%, rgba(123, 97, 255, 0.14), transparent 70%),
+    linear-gradient(180deg, #0a0e14, #05070c);
+  overflow: hidden;
+}
+
+.mk-row {
+  display: flex;
+  gap: 3%;
+  align-items: center;
+}
+
+.mk-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8%;
+  flex: 1;
+  min-width: 0;
+}
+
+.mk-line {
+  display: block;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.mk-line.light {
+  background: rgba(255, 255, 255, 0.34);
+}
+
+.mk-line.dim {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.mk-line.brand {
+  background: var(--tv-brand);
+}
+
+.mk-line.yellow {
+  background: var(--tv-yellow);
+}
+
+.mk-w30 { width: 30%; }
+.mk-w40 { width: 40%; }
+.mk-w50 { width: 50%; }
+.mk-w65 { width: 65%; }
+.mk-w80 { width: 80%; }
+
+.mk-pill {
+  height: 20px;
+  min-width: 46px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--tv-border-strong);
+}
+
+.mk-pill.on {
+  background: rgba(0, 212, 170, 0.24);
+  border-color: var(--tv-brand);
+}
+
+.mk-pill.grow {
+  flex: 1;
+}
+
+.mk-cover {
+  border-radius: 10px;
+  background: linear-gradient(140deg, #7b61ff, #00d4aa);
+  opacity: 0.92;
+}
+
+.mk-cover.v2 { background: linear-gradient(140deg, #00d4aa, #0f766e); }
+.mk-cover.v3 { background: linear-gradient(140deg, #ffb800, #b45309); }
+.mk-cover.v4 { background: linear-gradient(140deg, #7b61ff, #db2777); }
+
+.mk-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.mk-dot.on {
+  background: var(--tv-brand);
+}
+
+.mk-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--tv-border-strong);
+}
+
+.mk-btn.big {
+  width: 42px;
+  height: 42px;
+  background: var(--tv-brand);
+  border-color: var(--tv-brand);
+  box-shadow: 0 0 22px rgba(0, 212, 170, 0.45);
+}
+
+/* —— 首页仪表盘 —— */
+.mk-dash-top {
+  display: flex;
+  align-items: center;
+  gap: 3%;
+}
+
+.mk-dash-hero {
+  display: flex;
+  gap: 4%;
+  align-items: center;
+  padding: 3% 3.5%;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid var(--tv-border);
+}
+
+.mk-dash-hero .mk-cover {
+  width: 22%;
+  aspect-ratio: 1;
+  flex-shrink: 0;
+  border-radius: 12px;
+}
+
+.mk-wave {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 22px;
+}
+
+.mk-wave span {
+  width: 4px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--tv-brand), var(--tv-purple));
+}
+
+.mk-tiles {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3%;
+  flex: 1;
+}
+
+.mk-tiles .mk-cover {
+  border-radius: 12px;
+}
+
+/* —— 播放页：左侧大封面（旋转黑胶）+ 右侧逐行滚动歌词 —— */
+.mk-player {
+  flex-direction: row;
+  align-items: center;
+  gap: 6%;
+}
+
+.mk-player-left {
+  width: 34%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8%;
+}
+
+.mk-vinyl {
+  position: relative;
+  width: 88%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: repeating-radial-gradient(circle, #0b0f16 0 5px, #141b26 5px 7px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55);
+  animation: mk-spin 22s linear infinite;
+}
+
+.mk-vinyl::after {
+  content: "";
+  position: absolute;
+  inset: 33%;
+  border-radius: 50%;
+  background: linear-gradient(140deg, var(--tv-purple), var(--tv-brand));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+@keyframes mk-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.mk-player-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6%;
+  min-width: 0;
+}
+
+.mk-lyric-active {
+  font-size: clamp(9px, 1.5vw, 14px);
+  font-weight: 700;
+  color: var(--tv-title);
+}
+
+/* 逐字高亮示意：青色已唱部分 + 灰色未唱部分 */
+.mk-ktext {
+  font-size: clamp(10px, 1.7vw, 16px);
+  font-weight: 700;
+  background: linear-gradient(
+    90deg,
+    var(--tv-yellow) 0 46%,
+    rgba(255, 255, 255, 0.4) 46% 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.mk-progress {
+  position: relative;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  overflow: hidden;
+}
+
+.mk-progress span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 42%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--tv-brand), var(--tv-purple));
+}
+
+/* —— K 歌页：居中毛玻璃歌词卡 + 底部大按钮 —— */
+.mk-ktv {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mk-glass {
+  width: 84%;
+  padding: 4.5% 5%;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.45);
+}
+
+.mk-ktv-bar {
+  display: flex;
+  align-items: center;
+  gap: 5%;
+  width: 100%;
+  justify-content: center;
+}
+
+/* —— MTV 播放页：全屏视频帧 + 发光歌名 —— */
+.mk-mtv {
+  padding: 0;
+  gap: 0;
+}
+
+.mk-video {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(45% 60% at 30% 35%, rgba(123, 97, 255, 0.5), transparent 70%),
+    radial-gradient(50% 60% at 72% 62%, rgba(0, 212, 170, 0.36), transparent 70%),
+    linear-gradient(160deg, #0b1018, #05070c);
+}
+
+.mk-mtv-center {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.mk-mtv-name {
+  font-size: clamp(13px, 2.4vw, 24px);
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #fff;
+  text-shadow: 0 0 18px rgba(0, 212, 170, 0.6);
+}
+
+.mk-mtv-bar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4%;
+  padding: 0 6% 5%;
+}
+
+/* —— 可视化舞台：彩色渐变粒子背景 + 顶部歌词胶囊 —— */
+.mk-viz {
+  padding: 0;
+  gap: 0;
+}
+
+.mk-viz-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(30% 40% at 22% 30%, rgba(0, 212, 170, 0.5), transparent 70%),
+    radial-gradient(34% 42% at 72% 26%, rgba(123, 97, 255, 0.5), transparent 70%),
+    radial-gradient(40% 46% at 52% 80%, rgba(255, 184, 0, 0.28), transparent 72%),
+    linear-gradient(180deg, #060a10, #05070c);
+}
+
+/* 粒子点阵：用多重 radial-gradient 拼出随机圆点，无图片、无额外 DOM */
+.mk-viz-particles {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.85) 1.2px, transparent 1.6px),
+    radial-gradient(circle, rgba(0, 212, 170, 0.9) 1.4px, transparent 2px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.6) 1px, transparent 1.4px);
+  background-size: 46px 40px, 62px 54px, 34px 30px;
+  background-position: 0 0, 18px 12px, 8px 22px;
+  opacity: 0.55;
+  animation: mk-twin 9s ease-in-out infinite;
+}
+
+@keyframes mk-twin {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.75; transform: scale(1.04); }
+}
+
+.mk-viz-top {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  padding-top: 5%;
+}
+
+.mk-lyric-pill {
+  padding: 7px 18px;
+  border-radius: 999px;
+  font-size: clamp(9px, 1.5vw, 13px);
+  color: #fff;
+  background: rgba(5, 7, 12, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(8px);
+}
+
+.mk-viz-bottom {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 5% 5%;
+}
+
+.mk-viz-dots {
+  display: flex;
+  gap: 6px;
+}
+
+/* —— 曲库页：大标题 + Tab 行 + 封面网格 + 字母索引 —— */
+.mk-lib-head {
+  display: flex;
+  align-items: center;
+  gap: 3%;
+}
+
+.mk-lib-title {
+  font-size: clamp(12px, 2vw, 20px);
+  font-weight: 700;
+  color: var(--tv-title);
+  flex-shrink: 0;
+}
+
+.mk-lib-tabs {
+  display: flex;
+  gap: 2.5%;
+  flex: 1;
+  min-width: 0;
+}
+
+.mk-lib-body {
+  flex: 1;
+  display: flex;
+  gap: 3%;
+  min-height: 0;
+}
+
+.mk-lib-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4%;
+}
+
+.mk-lib-grid .mk-cover {
+  border-radius: 10px;
+}
+
+.mk-index {
+  width: 8%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+}
+
+.mk-index i {
+  width: 60%;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.mk-index i.on {
+  background: var(--tv-brand);
+}
+
+/* ==========================================================================
+   6. 底部 CTA
+   ========================================================================== */
+.tv-cta {
+  position: relative;
+  padding: 120px 0 132px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.tv-cta-glow {
+  position: absolute;
+  inset: 10% 12% -20%;
+  z-index: -1;
+  pointer-events: none;
+  filter: blur(80px);
+  opacity: 0.6;
+  background: radial-gradient(50% 60% at 50% 40%, rgba(0, 212, 170, 0.28), transparent 72%);
+}
+
+.tv-cta-title {
+  font-size: clamp(30px, 4vw, 56px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.6px;
+  color: var(--tv-title);
+}
+
+.tv-cta-desc {
+  max-width: 660px;
+  margin: 22px auto 0;
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--tv-text);
+}
+
+.tv-cta-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 44px;
+}
+
+/* ==========================================================================
+   7. 滚动渐入（Intersection Observer 触发；reduced-motion 下直接显示）
+   ========================================================================== */
+.tv-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.62s ease, transform 0.62s ease;
+  will-change: opacity, transform;
+}
+
+.tv-reveal.is-in {
+  opacity: 1;
+  transform: translateY(0);
+  will-change: auto;
+}
+
+/* ==========================================================================
+   8. 响应式：≥1280 三列/两列 → 768–1279 两列/一列 → <768 全单列
+   ========================================================================== */
+@media (max-width: 1279px) {
+  .tv-home {
+    --tv-section: 88px;
+  }
+  .tv-feature-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .tv-screens {
+    grid-template-columns: 1fr;
+  }
+  .tv-grid-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .tv-hero-inner {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .tv-hero {
+    min-height: auto;
+    padding: 112px 0 72px;
+  }
+}
+
+@media (max-width: 767px) {
+  .tv-home {
+    --tv-section: 64px;
+  }
+  .tv-feature-grid,
+  .tv-screens,
+  .tv-grid-4,
+  .tv-stats {
+    grid-template-columns: 1fr;
+  }
+  /* 手机端 Hero 标题降到 36px，正文不小于 15px */
+  .tv-hero-brand {
+    font-size: 40px;
+  }
+  .tv-hero-title {
+    font-size: 36px;
+  }
+  .tv-hero-lead {
+    font-size: 17px;
+  }
+  .tv-hero-sub,
+  .tv-card-desc,
+  .tv-screen-desc,
+  .tv-feature-desc {
+    font-size: 15px;
+  }
+  /* 【美化要点 · 手机可读性】手机端所有正文级文字不小于 15px：
+     标签 / 提示 / 等宽小字同步放大，避免大屏设计系统的小字在手机上不可读 */
+  .tv-eyebrow,
+  .tv-tag,
+  .tv-pill,
+  .tv-screen-hint,
+  .tv-stat-label,
+  .tv-hero-note {
+    font-size: 15px;
+  }
+  /* 按钮全宽堆叠 */
+  .tv-hero-actions,
+  .tv-cta-actions {
+    flex-direction: column;
+  }
+  .tv-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .tv-card {
+    padding: 26px 22px;
+  }
+  .tv-screen-body {
+    padding: 20px 20px 22px;
+  }
+  .tv-screen-name {
+    font-size: 18px;
+  }
+}
+
+/* ==========================================================================
+   9. 动效可访问性：用户要求减少动效时，关闭全部非必要动画
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .tv-home *,
+  .tv-home *::before,
+  .tv-home *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .tv-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .tv-particle,
+  .mk-vinyl,
+  .mk-viz-particles {
+    animation: none !important;
+  }
+}

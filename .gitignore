@@ -1,0 +1,27 @@
+target/
+uploads/
+*.log
+.idea/
+.vscode/
+*.iml
+.idea/
+logs/
+nul
+.env
+.claude/
+.workbuddy-ai/
+
+# ── 以下由莫一云平台补充（避免把依赖/产物推上仓库） ──
+node_modules/
+.pnpm-store/
+.yarn/
+dist/
+build/
+out/
+.next/
+.nuxt/
+*.class
+__pycache__/
+.venv/
+venv/
+.DS_Store

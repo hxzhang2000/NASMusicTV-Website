@@ -1,0 +1,30 @@
+# 截图下载地址（可选）—— 每行「槽位名 图片网址」，用空格分隔
+#
+# 用法（项目根目录执行）：
+#   bash web/scripts/fetch-screenshots.sh
+#
+# 脚本会按下面的地址把图片下载到 web/public/screens/，并自动生成 index.json 清单。
+# 以 # 开头的行是注释，可以删掉不需要的行。图片放图床 / CDN / GitHub 都行（需可直链访问）。
+#
+# 槽位名共 16 个（行首为槽位名，后面的 # 注释可留可删）：
+#   01-dashboard   首页仪表盘
+#   02-player      正在播放
+#   03-karaoke     K 歌页
+#   04-mtv         MTV 播放页
+#   05-visualizer  可视化舞台
+#   06-library     曲库页
+#   07-discover    发现页
+#   08-search      搜索页
+#   09-weather-radio 天气电台
+#   10-detail      艺术家详情
+#   11-queue       播放队列
+#   12-mine        我的页
+#   13-settings    设置页
+#   14-connection  服务器连接页
+#   15-about       关于页
+#   16-remote      手机遥控页
+#
+# 示例（去掉行首的 # 并换成你自己的地址即可）：
+# 01-dashboard https://cdn.example.com/nas-music-tv/01-dashboard.png
+# 02-player https://cdn.example.com/nas-music-tv/02-player.png
+# 03-karaoke https://cdn.example.com/nas-music-tv/03-karaoke.png

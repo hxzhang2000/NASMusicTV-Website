@@ -1,0 +1,4 @@
+
+# ── 以下由莫一云平台补充（CI 文件必须 LF，Windows 上 autocrlf 会毁掉它们） ──
+.gitea/workflows/*.yml text eol=lf
+docker-bake.hcl text eol=lf

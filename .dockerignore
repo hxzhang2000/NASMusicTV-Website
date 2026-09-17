@@ -1,0 +1,38 @@
+# Git
+.git
+.gitignore
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# 日志
+logs
+*.log
+
+# 临时文件
+tmp
+temp
+.tmp
+
+# 上传文件（需要持久化挂载，不打包进镜像）
+backend/uploads
+
+# Node 依赖（容器内重新安装）
+web/node_modules
+admin/node_modules
+
+# 构建产物（容器内重新构建）
+web/dist
+admin/dist
+backend/target
+
+# Maven 本地仓库
+.m2
+
+# 环境变量文件
+.env
+.env.local
+.env.*.local

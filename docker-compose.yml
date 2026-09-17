@@ -1,0 +1,65 @@
+# 网站部署
+#
+# 构建（开发平台执行）:
+#   docker compose build
+#
+# 运行（部署到 Swarm + Traefik，由开发平台调用）:
+#   docker stack deploy -c docker-compose.yml <stack-name>
+#
+# 约定:
+#   - 网络:
+#       * default (overlay): 服务内部通信
+#       * traefik-public (overlay, external): Traefik 反代网络，仅 web 加入
+#   - Traefik labels 由开发平台在部署时通过 ComposePatcher 注入，
+#     本文件不再写 traefik.* labels（避免重复）
+#   - 镜像名约定: ${HARBOR_HOST}/${PROJECT_NAME}/<service>:${TAG}
+#     平台 patchForSwarm 会按此规则重写为最终仓库地址
+#   - ports / container_name / depends_on.condition: 在 swarm 下被忽略，不再保留
+
+name: ${PROJECT_NAME:-hxzhang-31}
+
+services:
+  # ----------------------------------------------------------
+  # MySQL 数据库（仅 backend 可达）
+  # ----------------------------------------------------------
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ${HARBOR_HOST:-harbor.example}/${PROJECT_NAME:-common}/web:${TAG:-latest}
+    restart: unless-stopped
+    volumes:
+      # nginx 日志持久化
+      - web-logs:/var/log/nginx
+    networks:
+      - default
+      - traefik-public
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/nginx-health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+
+# ----------------------------------------------------------
+# 数据卷
+# ----------------------------------------------------------
+volumes:
+  mysql-data:
+  uploads-data:
+  web-logs:
+
+# ----------------------------------------------------------
+# 网络
+#   - default: overlay，swarm 集群内服务互访
+#   - traefik-public: 外部 overlay 网络，由部署平台预创建
+# ----------------------------------------------------------
+networks:
+  default:
+    driver: overlay
+  traefik-public:
+    external: true
