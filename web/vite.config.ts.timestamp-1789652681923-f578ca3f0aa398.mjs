@@ -1,0 +1,35 @@
+// vite.config.ts
+import { defineConfig } from "file:///home/project/web/node_modules/vite/dist/node/index.js";
+import react from "file:///home/project/web/node_modules/@vitejs/plugin-react/dist/index.js";
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+var __vite_injected_original_import_meta_url = "file:///home/project/web/vite.config.ts";
+var pkg = JSON.parse(
+  readFileSync(fileURLToPath(new URL("./package.json", __vite_injected_original_import_meta_url)), "utf-8")
+);
+var buildTime = (/* @__PURE__ */ new Date()).toISOString().slice(0, 16).replace("T", " ");
+var vite_config_default = defineConfig({
+  base: "/",
+  plugins: [react()],
+  define: {
+    __APP_VERSION__: JSON.stringify(pkg.version),
+    __APP_BUILD_TIME__: JSON.stringify(buildTime)
+  },
+  server: {
+    port: 5174,
+    proxy: {
+      "/api": {
+        target: "http://localhost:8080",
+        changeOrigin: true
+      },
+      "/uploads": {
+        target: "http://localhost:8080",
+        changeOrigin: true
+      }
+    }
+  }
+});
+export {
+  vite_config_default as default
+};
+//# sourceMappingURL=data:application/json;base64,ewogICJ2ZXJzaW9uIjogMywKICAic291cmNlcyI6IFsidml0ZS5jb25maWcudHMiXSwKICAic291cmNlc0NvbnRlbnQiOiBbImNvbnN0IF9fdml0ZV9pbmplY3RlZF9vcmlnaW5hbF9kaXJuYW1lID0gXCIvaG9tZS9wcm9qZWN0L3dlYlwiO2NvbnN0IF9fdml0ZV9pbmplY3RlZF9vcmlnaW5hbF9maWxlbmFtZSA9IFwiL2hvbWUvcHJvamVjdC93ZWIvdml0ZS5jb25maWcudHNcIjtjb25zdCBfX3ZpdGVfaW5qZWN0ZWRfb3JpZ2luYWxfaW1wb3J0X21ldGFfdXJsID0gXCJmaWxlOi8vL2hvbWUvcHJvamVjdC93ZWIvdml0ZS5jb25maWcudHNcIjtpbXBvcnQgeyBkZWZpbmVDb25maWcgfSBmcm9tIFwidml0ZVwiO1xuaW1wb3J0IHJlYWN0IGZyb20gXCJAdml0ZWpzL3BsdWdpbi1yZWFjdFwiO1xuaW1wb3J0IHsgcmVhZEZpbGVTeW5jIH0gZnJvbSBcIm5vZGU6ZnNcIjtcbmltcG9ydCB7IGZpbGVVUkxUb1BhdGggfSBmcm9tIFwibm9kZTp1cmxcIjtcblxuLyoqXG4gKiBcdTdGNTFcdTdBRDlcdTcyRUNcdTdBQ0JcdTcyNDhcdTY3MkNcdTRGNTNcdTdDRkJcdUZGMUFwYWNrYWdlLmpzb24gXHU3Njg0IHZlcnNpb24gXHU2NjJGXHU1NTJGXHU0RTAwXHU2NzY1XHU2RTkwXHUzMDAyXG4gKiBcdTY3ODRcdTVFRkFcdTY1RjZcdTZDRThcdTUxNjVcdTUyMzBcdTRFRTNcdTc4MDFcdTRFMkRcdUZGMDhgX19BUFBfVkVSU0lPTl9fYCAvIGBfX0FQUF9CVUlMRF9USU1FX19gXHVGRjA5XHVGRjBDXG4gKiBcdTU2RTBcdTZCNjRcdTY1MzlcdTcyNDhcdTY3MkNcdTUzRUFcdTk3MDAgYG5wbSB2ZXJzaW9uYCBcdTYyMTZcdTdGMTZcdThGOTEgcGFja2FnZS5qc29uXHVGRjBDXHU3NTRDXHU5NzYyXHU0RjFBXHU4MUVBXHU1MkE4XHU1NDBDXHU2QjY1XHUzMDAyXG4gKi9cbmNvbnN0IHBrZyA9IEpTT04ucGFyc2UoXG4gIHJlYWRGaWxlU3luYyhmaWxlVVJMVG9QYXRoKG5ldyBVUkwoXCIuL3BhY2thZ2UuanNvblwiLCBpbXBvcnQubWV0YS51cmwpKSwgXCJ1dGYtOFwiKVxuKTtcbmNvbnN0IGJ1aWxkVGltZSA9IG5ldyBEYXRlKCkudG9JU09TdHJpbmcoKS5zbGljZSgwLCAxNikucmVwbGFjZShcIlRcIiwgXCIgXCIpO1xuXG5leHBvcnQgZGVmYXVsdCBkZWZpbmVDb25maWcoe1xuICBiYXNlOiBcIi9cIixcbiAgcGx1Z2luczogW3JlYWN0KCldLFxuICBkZWZpbmU6IHtcbiAgICBfX0FQUF9WRVJTSU9OX186IEpTT04uc3RyaW5naWZ5KHBrZy52ZXJzaW9uKSxcbiAgICBfX0FQUF9CVUlMRF9USU1FX186IEpTT04uc3RyaW5naWZ5KGJ1aWxkVGltZSksXG4gIH0sXG4gIHNlcnZlcjoge1xuICAgIHBvcnQ6IDUxNzQsXG4gICAgcHJveHk6IHtcbiAgICAgIFwiL2FwaVwiOiB7XG4gICAgICAgIHRhcmdldDogXCJodHRwOi8vbG9jYWxob3N0OjgwODBcIixcbiAgICAgICAgY2hhbmdlT3JpZ2luOiB0cnVlLFxuICAgICAgfSxcbiAgICAgIFwiL3VwbG9hZHNcIjoge1xuICAgICAgICB0YXJnZXQ6IFwiaHR0cDovL2xvY2FsaG9zdDo4MDgwXCIsXG4gICAgICAgIGNoYW5nZU9yaWdpbjogdHJ1ZSxcbiAgICAgIH0sXG4gICAgfSxcbiAgfSxcbn0pO1xuIl0sCiAgIm1hcHBpbmdzIjogIjtBQUFxTyxTQUFTLG9CQUFvQjtBQUNsUSxPQUFPLFdBQVc7QUFDbEIsU0FBUyxvQkFBb0I7QUFDN0IsU0FBUyxxQkFBcUI7QUFINEcsSUFBTSwyQ0FBMkM7QUFVM0wsSUFBTSxNQUFNLEtBQUs7QUFBQSxFQUNmLGFBQWEsY0FBYyxJQUFJLElBQUksa0JBQWtCLHdDQUFlLENBQUMsR0FBRyxPQUFPO0FBQ2pGO0FBQ0EsSUFBTSxhQUFZLG9CQUFJLEtBQUssR0FBRSxZQUFZLEVBQUUsTUFBTSxHQUFHLEVBQUUsRUFBRSxRQUFRLEtBQUssR0FBRztBQUV4RSxJQUFPLHNCQUFRLGFBQWE7QUFBQSxFQUMxQixNQUFNO0FBQUEsRUFDTixTQUFTLENBQUMsTUFBTSxDQUFDO0FBQUEsRUFDakIsUUFBUTtBQUFBLElBQ04saUJBQWlCLEtBQUssVUFBVSxJQUFJLE9BQU87QUFBQSxJQUMzQyxvQkFBb0IsS0FBSyxVQUFVLFNBQVM7QUFBQSxFQUM5QztBQUFBLEVBQ0EsUUFBUTtBQUFBLElBQ04sTUFBTTtBQUFBLElBQ04sT0FBTztBQUFBLE1BQ0wsUUFBUTtBQUFBLFFBQ04sUUFBUTtBQUFBLFFBQ1IsY0FBYztBQUFBLE1BQ2hCO0FBQUEsTUFDQSxZQUFZO0FBQUEsUUFDVixRQUFRO0FBQUEsUUFDUixjQUFjO0FBQUEsTUFDaEI7QUFBQSxJQUNGO0FBQUEsRUFDRjtBQUNGLENBQUM7IiwKICAibmFtZXMiOiBbXQp9Cg==
