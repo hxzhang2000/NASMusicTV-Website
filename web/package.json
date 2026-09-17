@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "build": "tsc --noEmit && vite build",
+    "build": "tsc --noEmit && vite build && node -e \"const fs=require('fs'),p=require('path');const src=p.join(__dirname,'dist'),dst=p.join(__dirname,'..','dist');if(!fs.existsSync(src)){console.error('web/dist not found');process.exit(1)}fs.rmSync(dst,{recursive:true,force:true});fs.cpSync(src,dst,{recursive:true});console.log('Copied web/dist -> root dist/')\"",
     "preview": "vite preview --host 0.0.0.0"
   },
   "dependencies": {
