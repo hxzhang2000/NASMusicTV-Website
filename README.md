@@ -157,6 +157,6 @@ docker run --rm -p 8080:80 nasmtv-web
 
 ## 版本
 
-- 网站有**独立于 Android 应用**的版本号，唯一来源是 `web/package.json` 的 `version` 字段（当前 `1.0.1`）。
+- 网站有**独立于 Android 应用**的版本号，唯一来源是 `web/package.json` 的 `version` 字段（当前 `1.0.2`）。
 - 升级版本只需 `npm version <patch|minor|major>` 或手动修改该字段，重新构建后界面（页脚 + 关于页）会自动同步，无需改代码。
 - 版本号与构建时间由 Vite 在构建时注入（`web/src/version.ts` → `SITE_VERSION` / `SITE_BUILD_TIME`）。
