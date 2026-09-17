@@ -1,26 +1,27 @@
 {
   "_comment": [
-    "官网界面截图清单（16 张，全部来自 GitHub 仓库 docs/snapshot/ 目录）。",
-    "这里用的是 raw.githubusercontent.com 直链：blob 页面地址不能直接当图片用，必须是 raw 地址。",
-    "换图只需改对应槽位的网址；外链失效时该位置显示空帧，不会破图。",
-    "槽位名与文件对应：01-dashboard … 16-remote（同 docs/snapshot/ 下的文件名）。"
+    "官网界面截图清单（16 张，全部自托管于本目录 web/public/screens/）。",
+    "值写的是本地文件名（相对于 public/screens/ 目录），构建后由前端拼上 /screens/ 前缀直接引用。",
+    "换图只需替换对应槽位的本地文件，无需改这里；文件名缺失时该位置显示空帧，不会破图。",
+    "槽位名与文件对应：01-dashboard … 16-remote（同本目录下的文件名，均为 .jpg）。",
+    "也可改用图床 / CDN：把值写成完整 https:// 地址即可，前端会原样使用。"
   ],
   "urls": {
-    "01-dashboard": "https://raw.githubusercontent.com/hxzhang2000/NASMusicTV/main/docs/snapshot/01-dashboard.jpg",
-    "02-player": "https://raw.githubusercontent.com/hxzhang2000/NASMusicTV/main/docs/snapshot/02-player.jpg",
-    "03-karaoke": "https://raw.githubusercontent.com/hxzhang2000/NASMusicTV/main/docs/snapshot/03-karaoke.jpg",
-    "04-mtv": "https://raw.githubusercontent.com/hxzhang2000/NASMusicTV/main/docs/snapshot/04-mtv.jpg",
-    "05-visualizer": "https://raw.githubusercontent.com/hxzhang2000/NASMusicTV/main/docs/snapshot/05-visualizer.jpg",
-    "06-library": "https://raw.githubusercontent.com/hxzhang2000/NASMusicTV/main/docs/snapshot/06-library.jpg",
-    "07-discover": "https://raw.githubusercontent.com/hxzhang2000/NASMusicTV/main/docs/snapshot/07-discover.jpg",
-    "08-search": "https://raw.githubusercontent.com/hxzhang2000/NASMusicTV/main/docs/snapshot/08-search.jpg",
-    "09-weather-radio": "https://raw.githubusercontent.com/hxzhang2000/NASMusicTV/main/docs/snapshot/09-weather-radio.jpg",
-    "10-detail": "https://raw.githubusercontent.com/hxzhang2000/NASMusicTV/main/docs/snapshot/10-detail.jpg",
-    "11-queue": "https://raw.githubusercontent.com/hxzhang2000/NASMusicTV/main/docs/snapshot/11-queue.jpg",
-    "12-mine": "https://raw.githubusercontent.com/hxzhang2000/NASMusicTV/main/docs/snapshot/12-mine.jpg",
-    "13-settings": "https://raw.githubusercontent.com/hxzhang2000/NASMusicTV/main/docs/snapshot/13-settings.jpg",
-    "14-connection": "https://raw.githubusercontent.com/hxzhang2000/NASMusicTV/main/docs/snapshot/14-connection.jpg",
-    "15-about": "https://raw.githubusercontent.com/hxzhang2000/NASMusicTV/main/docs/snapshot/15-about.jpg",
-    "16-remote": "https://raw.githubusercontent.com/hxzhang2000/NASMusicTV/main/docs/snapshot/16-remote.jpg"
+    "01-dashboard": "01-dashboard.jpg",
+    "02-player": "02-player.jpg",
+    "03-karaoke": "03-karaoke.jpg",
+    "04-mtv": "04-mtv.jpg",
+    "05-visualizer": "05-visualizer.jpg",
+    "06-library": "06-library.jpg",
+    "07-discover": "07-discover.jpg",
+    "08-search": "08-search.jpg",
+    "09-weather-radio": "09-weather-radio.jpg",
+    "10-detail": "10-detail.jpg",
+    "11-queue": "11-queue.jpg",
+    "12-mine": "12-mine.jpg",
+    "13-settings": "13-settings.jpg",
+    "14-connection": "14-connection.jpg",
+    "15-about": "15-about.jpg",
+    "16-remote": "16-remote.jpg"
   }
 }

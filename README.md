@@ -121,7 +121,7 @@ bash web/scripts/fetch-screenshots.sh
 
 脚本会下载图片到 `web/public/screens/` 并重写 `index.json`。某张图缺失不会破图，对应位置仅显示界面名空帧。
 
-> ⚠️ 当前 `index.json` 中的 16 张图指向 `raw.githubusercontent.com` 的外链，对部分网络环境（如中国大陆）访问不稳定。建议将图片落地到 `web/public/screens/` 自托管，使官网可离线、可稳定加载。
+> ✅ 16 张界面截图已自托管于 `web/public/screens/`（`01-dashboard.jpg` … `16-remote.jpg`），`index.json` 指向本地文件名，官网可离线、稳定加载，不再依赖 `raw.githubusercontent.com` 外链。换图只需替换对应文件即可。
 
 ---
 

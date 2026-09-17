@@ -3,7 +3,7 @@
  *
  * 图片来源有三种，前端按优先级取：
  *   1) `web/public/screens/index.json` 清单（可写本地文件名，也可写图床 / CDN / GitHub 外链）
- *      —— 现状用的就是这种：16 张图指向仓库 docs/snapshot/*.jpg 的 GitHub raw 直链。
+ *      —— 当前用的就是这种：16 张图已自托管于 web/public/screens/（本地文件名），不再使用 GitHub 外链。
  *   2) `web/public/screens/` 下的本地图片（自动识别 .png / .jpg / .jpeg / .webp）；
  *   3) 省事别名（见 nameAliases）：首页.png / 01.png / 01-首页.jpg 等同样能识别。
  * 也可以把一堆任意命名的截图丢进某个目录，跑 `bash web/scripts/place-screenshots.sh <目录>`
@@ -12,7 +12,7 @@
  *
  * 现状（已定稿）：16 张界面截图全部收齐 —— 01-dashboard … 16-remote。
  *   - 首页主视觉：不再单独提供 00-hero.png，自动复用 01-dashboard。
- *   - 社交分享图：不再单独提供 00-share-cover.png，index.html 的 og:image 复用 01-dashboard 直链。
+ *   - 社交分享图：不再单独提供 00-share-cover.png，index.html 的 og:image 复用本地 01-dashboard.jpg。
  *   - 手机版 5 张为可选项（本轮不提供），后续补图会自动出现 TV / 手机 切换按钮。
  * 以后想换成专门的横版大图，只需把文件放进目录并按 00-hero.png / 00-share-cover.png 命名，
  * 或在 index.json 里加对应槽位，无需修改任何代码。
@@ -118,7 +118,7 @@ export const shareCover: ShotSpec = {
   file: "00-share-cover.png",
   spec: "不再单独提供；社交分享图复用 01-dashboard（原建议 1200×630）",
   note:
-    "社交分享封面。已决定不再单独提供，`index.html` 的 og:image / twitter:image 已指向 01-dashboard 的 GitHub raw 直链；若以后放入本文件可按需改回专用封面。",
+    "社交分享封面。已决定不再单独提供，`index.html` 的 og:image / twitter:image 已指向本地 `/screens/01-dashboard.jpg`；若以后放入本文件可按需改回专用封面。",
   fallbackFiles: ["01-dashboard.png"],
 };
 
