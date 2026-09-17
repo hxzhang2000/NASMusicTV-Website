@@ -1,0 +1,12 @@
+{
+  "name": "nas-music-tv-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "NAS Music TV 官网（落地页）— 纯前端单页站点",
+  "scripts": {
+    "install:web": "cd web && npm install",
+    "dev": "cd web && npm run dev",
+    "build": "cd web && npm install && npm run build",
+    "preview": "cd web && npm run preview"
+  }
+}
