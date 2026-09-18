@@ -31,24 +31,6 @@ export default function AboutPage() {
 
       <section className="section" style={{ paddingTop: 24 }}>
         <div className="container">
-          <div
-            className="card"
-            style={{ display: "flex", gap: 18, alignItems: "center", marginBottom: 40 }}
-          >
-            <div className="card-icon">
-              <ApiOutlined />
-            </div>
-            <div>
-              <div className="card-title">网站版本</div>
-              <div className="card-desc">
-                当前官网版本 <code className="inline">v{SITE_VERSION}</code>
-                {SITE_BUILD_TIME ? ` · 构建于 ${SITE_BUILD_TIME}` : ""}
-                <br />
-                本版本号独立于 Android 应用本体，升级仅需修改 web/package.json 的 version 并重新构建。
-              </div>
-            </div>
-          </div>
-
           <div className="stats" style={{ marginBottom: 40 }}>
             {stats.map((s) => (
               <div className="stat-card" key={s.label}>
