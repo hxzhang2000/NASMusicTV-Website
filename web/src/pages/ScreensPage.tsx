@@ -23,21 +23,27 @@ export default function ScreensPage() {
 
       <section className="section" style={{ paddingTop: 20 }}>
         <div className="container">
-          <div className="grid grid-3">
-            {screens.map((s) => {
+          <div className="screens-list">
+            {screens.map((s, idx) => {
               const shot = screenShots[s.name];
+              const isReversed = idx % 2 === 1;
               return (
-                <div className="screen-card" key={s.name}>
-                  {shot ? (
-                    <Screenshot {...shot} alt={`${s.name} 界面截图`} />
-                  ) : (
-                    <div className="screen-thumb">
-                      <div className="shot-placeholder">
-                        <div className="shot-title">{s.name}</div>
+                <div
+                  className={`screen-row ${isReversed ? "screen-row-reversed" : ""}`}
+                  key={s.name}
+                >
+                  <div className="screen-image">
+                    {shot ? (
+                      <Screenshot {...shot} alt={`${s.name} 界面截图`} />
+                    ) : (
+                      <div className="screen-thumb">
+                        <div className="shot-placeholder">
+                          <div className="shot-title">{s.name}</div>
+                        </div>
                       </div>
-                    </div>
-                  )}
-                  <div className="screen-body">
+                    )}
+                  </div>
+                  <div className="screen-text">
                     <div className="screen-name">
                       {s.name}
                       <span className="tag">{s.tag}</span>
