@@ -102,7 +102,7 @@ export default function AboutPage() {
                 请通过 <a href={`${site.repo}/issues`} target="_blank" rel="noreferrer">GitHub Issues</a> 联系我们，我们将及时处理。
               </div>
             </div>
-            <div className="card" style={{ border: "1px solid rgba(0,212,170,0.3)" }}>
+            <div className="card">
               <div className="card-icon">
                 <ApiOutlined />
               </div>
