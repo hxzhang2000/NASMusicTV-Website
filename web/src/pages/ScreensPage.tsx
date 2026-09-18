@@ -60,7 +60,7 @@ export default function ScreensPage() {
               <div className="card-title">TV 专属体验</div>
               <ul className="check-list">
                 <li>完整 D-Pad 焦点导航 + HDMI-CEC 遥控器媒体键</li>
-                <li>可视化舞台 20+ 套特效，遥控器选定即恒定显示</li>
+                <li>可视化舞台 30+ 套特效，遥控器选定即恒定显示</li>
                 <li>K 歌 / MTV 全屏页二维码，手机扫码遥控队列</li>
                 <li>前台通知栏支持上一首 / 播放暂停 / 下一首</li>
               </ul>
