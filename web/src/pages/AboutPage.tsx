@@ -2,6 +2,7 @@ import { Tag } from "antd";
 import {
   ApiOutlined,
   CodeOutlined,
+  CopyrightOutlined,
   DownloadOutlined,
   GithubOutlined,
   HeartOutlined,
@@ -105,6 +106,18 @@ export default function AboutPage() {
               <div className="card-desc">
                 感谢 Jellyfin、Navidrome、Subsonic、Jamendo、Open-Meteo、OpenWeatherMap 等开源与服务提供方；
                 本项目与上述服务及百度网盘无隶属关系，使用时应遵守各服务方的条款与版权规定。
+              </div>
+            </div>
+            <div className="card">
+              <div className="card-icon">
+                <CopyrightOutlined />
+              </div>
+              <div className="card-title">版权说明</div>
+              <div className="card-desc">
+                本应用涉及的网络音乐搜索功能通过 Meting-API 端点获取公开数据，仅提供元数据索引。
+                原始版权归原始版权方所有，本应用仅为聚合浏览工具，不存储、分发或转售任何媒体文件，
+                也不对第三方音乐资源的合法性、准确性及可用性承担任何责任。如版权方认为其合法权益受到侵害，
+                请通过 <a href={`${site.repo}/issues`} target="_blank" rel="noreferrer">GitHub Issues</a> 联系我们，我们将及时处理。
               </div>
             </div>
           </div>
