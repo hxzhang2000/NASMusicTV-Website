@@ -173,6 +173,31 @@ export default function AboutPage() {
 
       <section className="section" style={{ paddingTop: 0 }}>
         <div className="container">
+          <div className="card" style={{ border: "1px solid rgba(0,212,170,0.3)" }}>
+            <div className="card-icon">
+              <ApiOutlined />
+            </div>
+            <div className="card-title">推荐工具</div>
+            <div className="card-desc">
+              <strong>bolt.new</strong> — 在浏览器中直接运行的 AI 全栈开发环境。无需本地配置，
+              输入需求即可生成完整应用并一键部署。适合快速原型验证和学习新技术。
+            </div>
+            <div style={{ marginTop: 18 }}>
+              <a
+                href="https://bolt.cello.so/baFWRasfV6k"
+                target="_blank"
+                rel="noreferrer"
+                className="cta-primary"
+              >
+                体验 bolt.new →
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section" style={{ paddingTop: 0 }}>
+        <div className="container">
           <div className="cta-band">
             <h3>一起把客厅音乐体验做得更好</h3>
             <p>下载体验、反馈问题、分享给你的家庭影音群，都是对项目的支持。</p>
