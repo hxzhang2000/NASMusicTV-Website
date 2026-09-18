@@ -172,10 +172,24 @@
 
 .tv-hero-inner {
   display: grid;
-  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
-  gap: 64px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 48px;
   align-items: center;
   width: 100%;
+  margin-top: 32px;
+}
+
+.tv-hero-title-full {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.tv-hero-title-full .tv-hero-brand {
+  text-align: center;
+}
+
+.tv-hero-title-full .tv-hero-title {
+  text-align: center;
 }
 
 .tv-badges {

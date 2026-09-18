@@ -400,8 +400,8 @@ export default function HomePage() {
           ))}
         </div>
 
-        <div className="container tv-hero-inner">
-          <div>
+        <div className="container">
+          <div className="tv-hero-title-full">
             <div className="tv-badges">
               <span className="tv-pill is-brand">
                 <TvIcon name="spark" size={14} />
@@ -415,64 +415,66 @@ export default function HomePage() {
               ))}
             </div>
 
-            {/* 产品名：超大标题（64–72px） */}
             <div className="tv-hero-brand">{site.name}</div>
-
-            {/* 主标题：一句话介绍（≤2 行）+ 完整副述（文案与原页面一致） */}
             <h1 id="tv-hero-title" className="tv-hero-title">
               把 NAS 曲库、网盘与网络音乐搬进客厅大屏
             </h1>
-            <p className="tv-hero-lead">{site.tagline}</p>
-            <p className="tv-hero-sub">{site.subtitle}</p>
-
-            <div className="tv-hero-actions">
-              <a
-                href={site.releases}
-                target="_blank"
-                rel="noreferrer"
-                className="tv-btn tv-btn-primary"
-              >
-                <TvIcon name="download" size={20} />
-                下载最新 APK
-              </a>
-              <Link to="/features" className="tv-btn tv-btn-ghost">
-                <TvIcon name="rocket" size={20} />
-                看看能做什么
-              </Link>
-              <a
-                href={site.repo}
-                target="_blank"
-                rel="noreferrer"
-                className="tv-btn tv-btn-ghost"
-              >
-                <TvIcon name="code" size={20} />
-                GitHub 源码
-              </a>
-            </div>
-
-            <p className="tv-hero-note">
-              电视、手机、平板共用同一 APK：电视走遥控器焦点体系，手机走触屏与 MiniPlayer。
-            </p>
           </div>
 
-          {/* 主视觉：16:9 电视外框 + 屏幕呼吸发光 */}
-          <div className="tv-hero-screen tv-reveal">
-            <div className="tv-frame tv-breathe">
-              <div className="tv-frame-inner">
-                {heroFile ? (
-                  <img
-                    className="tv-frame-img"
-                    src={heroFile}
-                    alt="NAS Music TV 首页仪表盘界面预览"
-                    loading="eager"
-                    decoding="async"
-                  />
-                ) : (
-                  <TvMock kind="player" />
-                )}
+          <div className="tv-hero-inner">
+            <div>
+              <p className="tv-hero-lead">{site.tagline}</p>
+              <p className="tv-hero-sub">{site.subtitle}</p>
+
+              <div className="tv-hero-actions">
+                <a
+                  href={site.releases}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="tv-btn tv-btn-primary"
+                >
+                  <TvIcon name="download" size={20} />
+                  下载最新 APK
+                </a>
+                <Link to="/features" className="tv-btn tv-btn-ghost">
+                  <TvIcon name="rocket" size={20} />
+                  看看能做什么
+                </Link>
+                <a
+                  href={site.repo}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="tv-btn tv-btn-ghost"
+                >
+                  <TvIcon name="code" size={20} />
+                  GitHub 源码
+                </a>
               </div>
+
+              <p className="tv-hero-note">
+                电视、手机、平板共用同一 APK：电视走遥控器焦点体系，手机走触屏与 MiniPlayer。
+              </p>
             </div>
-            <div className="tv-stand" aria-hidden="true" />
+
+            {/* 主视觉：16:9 电视外框 + 屏幕呼吸发光 */}
+            <div className="tv-hero-screen tv-reveal">
+              <div className="tv-frame tv-breathe">
+                <div className="tv-frame-inner">
+                  {heroFile ? (
+                    <img
+                      className="tv-frame-img"
+                      src={heroFile}
+                      alt="NAS Music TV 首页仪表盘界面预览"
+                      loading="eager"
+                      decoding="async"
+                    />
+                  ) : (
+                    <TvMock kind="player" />
+                  )}
+                </div>
+              </div>
+              <div className="tv-stand" aria-hidden="true" />
+            </div>
           </div>
         </div>
       </section>
