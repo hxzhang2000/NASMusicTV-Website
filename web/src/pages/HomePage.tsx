@@ -536,8 +536,7 @@ export default function HomePage() {
           <div className="tv-home-head tv-reveal">
             <span className="tv-eyebrow">Features</span>
             <h2 className="tv-h2">
-              覆盖曲库、歌词、播放与双端交互的
-              <span className="tv-accent">完整能力</span>
+              覆盖曲库、歌词、播放与双端交互的<span className="tv-accent">完整能力</span>
             </h2>
             <p className="tv-lead">
               共 {featureModules.length} 大功能模块，从连接 NAS 后端到本地扫描、网盘串流与可视化舞台，
