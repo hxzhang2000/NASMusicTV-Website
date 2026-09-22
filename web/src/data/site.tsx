@@ -23,11 +23,33 @@ export const site = {
   subtitle:
     "聚合 NAS（Jellyfin / Navidrome / Subsonic / 道理鱼 / 飞牛）、网络音乐与百度网盘多音乐源，支持逐字卡拉OK歌词、K 歌伴奏、MTV 音乐视频、天气电台等电视专属体验。同一 APK 同时适配电视（遥控器）与手机（触屏）。",
   repo: "https://github.com/hxzhang2000/NASMusicTV",
-  releases: "https://github.com/hxzhang2000/NasMusicTV/releases",
+  releases: "https://github.com/hxzhang2000/NASMusicTV/releases",
   stars: "https://www.star-history.com/?repos=hxzhang2000%2Fnasmusictv&type=date&legend=top-left",
   license: "GPL v3",
   devices: ["Android TV", "手机", "平板"],
 };
+
+/**
+ * 最新 APK 版本信息（下载页 / 首页 / 关于页共用，唯一来源）。
+ *
+ * 发新版本时只需两步：
+ *   1. 把新 APK 放进仓库根目录的 download/，文件名随版本号变化
+ *      （如 NASMusicTV-release-v2-36-5.apk -> NASMusicTV-release-v2-37-0.apk），删掉旧文件；
+ *   2. 更新下面这一处 APK_VERSION（"v2.36.5" -> "v2.37.0"）。
+ * 文件名、下载直链与页面展示的版本号都会自动同步，无需改其他代码。
+ * 下载页「更新内容」来自应用仓库 CHANGELOG.md：构建时优先读 ../NASMusicTV/CHANGELOG.md，
+ * Docker / CI 无应用仓库时回落到 web/src/data/appChangelog.md 快照（更新应用 CHANGELOG 后记得刷新快照）。
+ */
+export const APK_VERSION = "v2.36.6";
+
+/** 由版本号推导 APK 文件名：v2.36.5 -> NASMusicTV-release-v2-36-5.apk（点号转连字符） */
+export const APK_FILE_NAME = `NASMusicTV-release-${APK_VERSION.replace(/\./g, "-")}.apk`;
+
+/** APK 站内直链（构建时 download/ 下的 APK 会自动拷贝到 dist/download/ 随站点发布） */
+export const APK_DOWNLOAD_URL = `/download/${APK_FILE_NAME}`;
+
+/** GitHub 最新 Release 页（始终指向最新发布的版本） */
+export const APK_RELEASES_LATEST = `${site.repo}/releases/latest`;
 
 export const stats = [
   { value: "5", label: "NAS 后端支持" },
@@ -423,7 +445,11 @@ export const apiVersions = [
 export const faqs = [
   {
     q: "下载哪个安装包？",
-    a: "电视、手机、平板共用同一 APK。ARM64 / ARMv7 / x86_64 三种架构按设备选择：绝大多数电视盒子与手机用 ARM64，老设备用 ARMv7，模拟器用 x86_64。",
+    a: "电视、手机、平板、盒子与模拟器共用同一个通用 APK，无需按设备或架构挑选。安装包内置 ARM64 / ARMv7 / x86_64 三种架构，安装时系统会自动适配当前设备。",
+  },
+  {
+    q: "新版本发布后怎么更新？",
+    a: "在下载页点击「直接下载最新 APK」覆盖安装即可，无需卸载旧版本，播放记录与配置都会保留。也可以到 GitHub Releases 获取历史版本。",
   },
   {
     q: "不连接 NAS 后端能听歌吗？",

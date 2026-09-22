@@ -22,7 +22,7 @@
  */
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { site, stats, highlights, featureModules, screens } from "../data/site";
+import { site, stats, highlights, featureModules, screens, APK_DOWNLOAD_URL, APK_VERSION } from "../data/site";
 import { useScreenshots } from "../hooks/useScreenshots";
 import { heroShot, screenShots } from "../data/screenshots";
 import { TvIcon } from "../components/TvIcons";
@@ -428,9 +428,9 @@ export default function HomePage() {
 
               <div className="tv-hero-actions">
                 <a
-                  href={site.releases}
-                  target="_blank"
-                  rel="noreferrer"
+                  href={APK_DOWNLOAD_URL}
+                  download
+                  title={`直接下载最新 APK（${APK_VERSION}）`}
                   className="tv-btn tv-btn-primary"
                 >
                   <TvIcon name="download" size={20} />
@@ -636,9 +636,9 @@ export default function HomePage() {
           </p>
           <div className="tv-cta-actions tv-reveal">
             <a
-              href={site.releases}
-              target="_blank"
-              rel="noreferrer"
+              href={APK_DOWNLOAD_URL}
+              download
+              title={`直接下载最新 APK（${APK_VERSION}）`}
               className="tv-btn tv-btn-primary"
             >
               <TvIcon name="download" size={20} />

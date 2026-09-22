@@ -13,6 +13,24 @@
 ### 待办 / 已知问题
 - （无，已知问题均已在本版清理）
 
+## [1.0.3] - 2026-09-22
+
+维护版（patch）：下载页改版，新增 APK 站内直链下载。
+
+### Added
+- 下载页新增「直接下载最新 APK」站内直链与最新版本信息卡（版本号、APK 文件名、覆盖安装提示、GitHub Release 入口），点击即下载，不再绕跳外部页面。
+- 仓库根目录 `download/` 接入构建：新增 Vite 插件，构建时自动将 `download/*.apk` 拷入 `dist/download/` 随站点发布（Docker 镜像同样生效）；dev server 同样提供 `/download/` 直链（仅允许纯 `.apk` 文件名，防路径穿越）。
+- `site.tsx` 新增 `APK_VERSION` 作为最新 APK 版本唯一来源：文件名（`v2.36.6` → `NASMusicTV-release-v2-36-6.apk`）、下载直链、页面展示版本号均由版本号自动推导，发新版只需替换 `download/` 下的 APK 并改一处常量。
+- FAQ 新增「新版本发布后怎么更新」（覆盖安装保留数据）。
+- 下载页最新版本卡片内嵌应用最新版「更新内容」：构建时解析应用仓库 `CHANGELOG.md` 最新一节（版本 / 日期 / 摘要 / 新增修复条目）注入页面；本地构建优先读 `../NASMusicTV/CHANGELOG.md`，Docker / CI 回落 `web/src/data/appChangelog.md` 快照。
+
+### Changed
+- 下载页重排：原「选择对应架构」改为「一个 APK，全设备适配」（手机 / 平板 / 电视·盒子 / 模拟器四张设备卡），三种架构（ARM64 / ARMv7 / x86_64）改为「安装包内置、安装时自动适配」说明，不再引导用户挑版本。
+- 首页 Hero 与底部 CTA、关于页、顶栏右上角的下载按钮全部改为 APK 站内直链（原为跳转 GitHub Releases 或 `/download` 路由页）；`/download` 页面入口保留在导航「下载安装」。
+- FAQ「下载哪个安装包」更新为通用 APK 说明；关于页「发布方式」改为单个通用 APK 的描述。
+- `deploy/app.conf` nginx 静态缓存规则加入 `apk`（文件名含版本号，长缓存安全）。
+- `site.releases` 地址大小写修正（NasMusicTV → NASMusicTV）。
+
 ## [1.0.2] - 2026-09-18
 
 维护版（patch）：视觉调整与构建优化。

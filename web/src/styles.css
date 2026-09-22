@@ -1053,6 +1053,172 @@ a {
   line-height: 1.8;
 }
 
+/* ---------- 下载页 · 最新版本直下卡片 ---------- */
+.apk-panel {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 30px 34px;
+  border-radius: 20px;
+  background: linear-gradient(120deg, rgba(0, 212, 170, 0.14), rgba(123, 97, 255, 0.12));
+  border: 1px solid rgba(0, 212, 170, 0.32);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+}
+
+.apk-meta {
+  flex: 1;
+  min-width: 260px;
+}
+
+.apk-filename {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 9px 14px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid var(--border);
+  color: #9ef3e0;
+  font-family: "JetBrains Mono", "SF Mono", ui-monospace, SFMono-Regular, Consolas, Menlo,
+    monospace;
+  font-size: 13.5px;
+  letter-spacing: 0.2px;
+  word-break: break-all;
+}
+
+.apk-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.apk-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  min-width: 240px;
+}
+
+.apk-actions .cta-primary,
+.apk-actions .cta-ghost {
+  justify-content: center;
+}
+
+.apk-action-note {
+  font-size: 12.5px;
+  color: #7e8ea5;
+  text-align: center;
+}
+
+/* 最新版更新内容（来自应用仓库 CHANGELOG，构建时注入） */
+.apk-changelog {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+
+.apk-changelog-title {
+  font-size: 14.5px;
+  font-weight: 650;
+  color: var(--text);
+}
+
+.apk-changelog-date {
+  margin-left: 10px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #7e8ea5;
+  font-family: "JetBrains Mono", "SF Mono", ui-monospace, SFMono-Regular, Consolas, Menlo,
+    monospace;
+}
+
+.apk-changelog-summary {
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #9ef3e0;
+}
+
+.apk-changelog-section {
+  margin-top: 12px;
+}
+
+.apk-changelog-label {
+  display: inline-block;
+  padding: 1px 10px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  color: var(--brand);
+  background: rgba(0, 212, 170, 0.1);
+  border: 1px solid rgba(0, 212, 170, 0.32);
+}
+
+.apk-changelog-section ul {
+  list-style: none;
+  margin-top: 8px;
+}
+
+.apk-changelog-section li {
+  position: relative;
+  padding-left: 16px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--text-dim);
+}
+
+.apk-changelog-section li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 0.72em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--brand);
+  opacity: 0.7;
+}
+
+.apk-changelog-section li + li {
+  margin-top: 6px;
+}
+
+/* 内置架构标识：青绿对钩 + 「已内置」角标 */
+.arch-check {
+  color: var(--brand);
+  margin-right: 8px;
+}
+
+.arch-tag {
+  margin-left: 10px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--brand);
+  background: rgba(0, 212, 170, 0.12);
+  border: 1px solid rgba(0, 212, 170, 0.35);
+  vertical-align: 1px;
+}
+
+@media (max-width: 767px) {
+  .apk-panel {
+    padding: 24px 20px;
+  }
+
+  .apk-actions {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .apk-changelog {
+    max-height: 320px;
+    overflow-y: auto;
+  }
+}
+
 /* ---------- 客户支持 / 公告 ---------- */
 .notice {
   display: flex;

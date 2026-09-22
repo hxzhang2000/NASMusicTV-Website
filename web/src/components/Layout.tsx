@@ -8,7 +8,7 @@ import {
   DownloadOutlined,
 } from "@ant-design/icons";
 import { Link, useLocation } from "react-router-dom";
-import { site } from "../data/site";
+import { site, APK_DOWNLOAD_URL, APK_VERSION } from "../data/site";
 import { SITE_VERSION } from "../version";
 
 const NAV = [
@@ -85,11 +85,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 源码
               </Button>
             </a>
-            <Link to="/download">
+            <a href={APK_DOWNLOAD_URL} download title={`直接下载最新 APK（${APK_VERSION}）`}>
               <Button type="primary" icon={<DownloadOutlined />}>
                 下载
               </Button>
-            </Link>
+            </a>
           </div>
         </div>
       </header>

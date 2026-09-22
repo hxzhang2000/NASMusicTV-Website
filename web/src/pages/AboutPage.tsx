@@ -8,7 +8,7 @@ import {
   HeartOutlined,
   SafetyCertificateOutlined,
 } from "@ant-design/icons";
-import { apiVersions, site, stats } from "../data/site";
+import { apiVersions, site, stats, APK_DOWNLOAD_URL, APK_VERSION } from "../data/site";
 import { SITE_VERSION, SITE_BUILD_TIME } from "../version";
 
 export default function AboutPage() {
@@ -58,8 +58,9 @@ export default function AboutPage() {
               </div>
               <div className="card-title">发布方式</div>
               <div className="card-desc">
-                通过 GitHub Releases 发布 APK，提供 ARM64 / ARMv7 / x86_64 三种架构；电视与手机共用同一份安装包，
-                运行时自动识别设备类型并切换交互体系。
+                以单个通用 APK 发布（当前 v{APK_VERSION.replace(/^v/, "")}），内置 ARM64 / ARMv7 / x86_64
+                三种架构，手机、平板、电视与模拟器共用同一份安装包，运行时自动识别设备类型并切换交互体系。官网提供最新版直链下载，历史版本见
+                GitHub Releases。
               </div>
               <div style={{ marginTop: 18 }}>
                 <a href={site.releases} target="_blank" rel="noreferrer" className="cta-ghost">
@@ -197,8 +198,8 @@ export default function AboutPage() {
             <h3>一起把客厅音乐体验做得更好</h3>
             <p>下载体验、反馈问题、分享给你的家庭影音群，都是对项目的支持。</p>
             <div className="cta-band-actions">
-              <a href={site.releases} target="_blank" rel="noreferrer" className="cta-primary">
-                <DownloadOutlined /> 下载最新版
+              <a href={APK_DOWNLOAD_URL} download className="cta-primary">
+                <DownloadOutlined /> 直接下载最新 APK
               </a>
               <a href={`${site.repo}/issues`} target="_blank" rel="noreferrer" className="cta-ghost">
                 反馈问题
