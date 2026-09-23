@@ -1,6 +1,6 @@
 {
   "name": "nas-music-tv-website",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "description": "NAS Music TV 官网（落地页）— 纯前端单页站点",
   "scripts": {
