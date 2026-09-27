@@ -1185,6 +1185,64 @@ a {
   margin-top: 6px;
 }
 
+.apk-changelog-list {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.apk-changelog-item {
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--border);
+}
+
+.apk-changelog-item--highlight {
+  border-color: rgba(0, 212, 170, 0.25);
+  background: rgba(0, 212, 170, 0.04);
+}
+
+.apk-changelog-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.apk-changelog-version {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  font-family: "JetBrains Mono", "SF Mono", ui-monospace, SFMono-Regular, Consolas, Menlo,
+    monospace;
+}
+
+.apk-changelog-date {
+  font-size: 11.5px;
+  color: #7e8ea5;
+  font-family: "JetBrains Mono", "SF Mono", ui-monospace, SFMono-Regular, Consolas, Menlo,
+    monospace;
+}
+
+.apk-changelog-badge {
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--brand);
+  background: rgba(0, 212, 170, 0.12);
+  border: 1px solid rgba(0, 212, 170, 0.3);
+  letter-spacing: 0.5px;
+}
+
+.apk-changelog-item .apk-changelog-summary {
+  margin-top: 6px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
 /* 内置架构标识：青绿对钩 + 「已内置」角标 */
 .arch-check {
   color: var(--brand);

@@ -35,12 +35,37 @@ export const site = {
  * 发新版本时只需两步：
  *   1. 把新 APK 放进仓库根目录的 download/，文件名随版本号变化
  *      （如 NASMusicTV-release-v2-36-5.apk -> NASMusicTV-release-v2-37-0.apk），删掉旧文件；
- *   2. 更新下面这一处 APK_VERSION（"v2.36.5" -> "v2.37.0"）。
+ *   2. 更新下面这一处 APK_VERSION（"v2.36.5" -> "v2.37.5"）。
  * 文件名、下载直链与页面展示的版本号都会自动同步，无需改其他代码。
  * 下载页「更新内容」来自应用仓库 CHANGELOG.md：构建时优先读 ../NASMusicTV/CHANGELOG.md，
  * Docker / CI 无应用仓库时回落到 web/src/data/appChangelog.md 快照（更新应用 CHANGELOG 后记得刷新快照）。
  */
-export const APK_VERSION = "v2.36.6";
+export const APK_VERSION = "v2.37.5";
+
+/**
+ * 下载页「版本说明」：从上一个大版本到当前最新版的核心更新摘要。
+ * 发版时手动更新此数组即可（与 appChangelog.md 快照保持同步）。
+ */
+export interface RecentChangelogEntry {
+  version: string;
+  date: string;
+  summary: string;
+  /** 可选标记：是否为大版本更新（用于视觉突出） */
+  highlight?: boolean;
+}
+
+export const recentChangelog: RecentChangelogEntry[] = [
+  { version: "v2.37.5", date: "09-27", summary: "修复 MTV 页遥控器焦点卡在返回按钮" },
+  { version: "v2.37.4", date: "09-27", summary: "修复照片墙 Jellyfin 源返回 0 张照片" },
+  { version: "v2.37.3", date: "09-27", summary: "新增怀旧 CRT 电视频谱效果（牛皮纸背景、扫描线、RGB 色差、4:3 黑边+台标）", highlight: true },
+  { version: "v2.37.2", date: "09-26", summary: "齿轮可视化重做（同心嵌套环 → 行星轮系，太阳轮驱动行星轮齿对齿啮合）", highlight: true },
+  { version: "v2.37.1", date: "09-25", summary: "全量代码审查修复（27 High + 8 快修）：凭据明文落盘、队列崩溃、电台布局越界、删除歌单误触、下载崩溃恢复、百度封面 403、播放解析竞态、ViewModel 生命周期、UI 主线程 IO、触摸 seek 失效、分页冻结、密码明文、并发修补等" },
+  { version: "v2.37.0", date: "09-23", summary: "照片墙可视化（三来源图库/外接/Jellyfin、43 种转场、Ken Burns 运镜、端上人脸检测、设置面板）", highlight: true },
+  { version: "v2.36.7", date: "09-23", summary: "手机竖屏全屏沉浸式播放页 + 关于页布局修复 + 逐字歌词折行修复" },
+];
+
+/** 下载页「版本说明」标题范围：v2.36.6 → v2.37.5 */
+export const CHANGELOG_RANGE = "v2.36.6 → v2.37.5";
 
 /** 由版本号推导 APK 文件名：v2.36.5 -> NASMusicTV-release-v2-36-5.apk（点号转连字符） */
 export const APK_FILE_NAME = `NASMusicTV-release-${APK_VERSION.replace(/\./g, "-")}.apk`;
@@ -87,7 +112,13 @@ export const highlights: Highlight[] = [
   {
     key: "visualizer",
     title: "可视化特效库",
-    desc: "30+ 套全屏特效：数学曲线、棱镜彩虹、极光星空、歌词点阵，遥控器即时切换。",
+    desc: "30+ 套全屏特效：数学曲线、棱镜彩虹、极光星空、歌词点阵、怀旧 CRT 电视、行星齿轮系，遥控器即时切换。",
+    icon: <PictureOutlined />,
+  },
+  {
+    key: "photo-wall",
+    title: "照片墙可视化",
+    desc: "三来源照片全屏轮播：图库 / 外接存储 / Jellyfin，43 种转场效果、Ken Burns 运镜、端上人脸检测。",
     icon: <PictureOutlined />,
   },
   {
@@ -247,7 +278,7 @@ export const featureModules: FeatureModule[] = [
       "队列页布局：右侧「播放队列」大标题 + 曲目计数与「清空」按钮，左侧固定当前曲目大封面卡（下方居中显示歌名）",
       "队列行信息：序号、歌名、歌手、来源 / 状态标签（「已下载」蓝青 /「网络」绿色）、0:00 时长与行内下载 ↓ / 上移 ↑ / 移除 × 操作",
       "均衡器：预设方案 + 频段增益调节",
-      "可视化舞台：30+ 套特效（数学函数曲线、棱镜彩虹、极光·星空、歌词点阵等），左右键即时切换，遥控器选哪个就恒定显示哪个；全屏只留左上角退出、顶部胶囊歌词、左下角歌名歌手与底部进度圆点，歌词点阵自适应字号，粒子随鼓点律动",
+      "可视化舞台：30+ 套特效（数学函数曲线、棱镜彩虹、极光·星空、歌词点阵、怀旧 CRT 电视、行星齿轮系等），左右键即时切换，遥控器选哪个就恒定显示哪个；全屏只留左上角退出、顶部胶囊歌词、左下角歌名歌手与底部进度圆点，歌词点阵自适应字号，粒子随鼓点律动",
       "人声消除：实时分离人声与伴奏，K 歌背景音乐完整不塌方",
       "升降调 / 播放速度：播放页可调，K 歌时配合伴奏与节奏",
       "歌曲详情面板：码率、采样率、编码格式悬浮展示",
@@ -265,6 +296,21 @@ export const featureModules: FeatureModule[] = [
       "多封面轮播：歌曲 / 专辑 / 艺术家多张封面每 10 秒轮播",
       "歌词来源标签：显示当前歌词来源，点击即可切换",
       "封面滤镜：高斯模糊强度 + 暗色遮罩透明度实时应用",
+    ],
+  },
+  {
+    key: "photo-wall",
+    title: "照片墙可视化",
+    summary: "三来源照片全屏轮播，43 种转场效果，端上人脸检测",
+    icon: <PictureOutlined />,
+    items: [
+      "三来源独立开关混合轮播：图库（Android 13+ 分区存储）、外接存储（U 盘 / SD 卡）、Jellyfin 照片库",
+      "43 种转场效果：淡入 / 滑动 / 缩放 / 遮罩形状 / 分块 / 溶解 / 光效 / 风格化八大类，默认随机抽取且避免连续重复",
+      "Ken Burns 缓慢推近：缩放 1.00→1.08 + 平移，可选音频反应（随节拍脉冲 / 随低频呼吸）",
+      "画面适配：满屏（裁切铺满）与完整（留黑边内接）两种模式",
+      "端上人脸检测：YuNet（ONNX Runtime）检测人像，数据不出设备，独立结果库不随音乐库迁移",
+      "照片墙设置面板：9 项设置集中管理（来源开关 / 目录选择 / 转场 / 画面 / 人脸），含授权提示与照片数实时统计",
+      "解码缓冲：按画布降采样、上限 3 张缓存、低画质 RGB_565 降级、2048px 安全阀",
     ],
   },
   {
@@ -374,7 +420,12 @@ export const screens: Screen[] = [
   },
   {
     name: "可视化舞台",
-    desc: "30+ 套全屏可视化特效（含数学函数散点曲线、棱镜彩虹、极光·星空、歌词点阵等），左上角一键退出，顶部胶囊显示当前句歌词，左下角常驻歌名与歌手，底部圆点指示当前进度；遥控器选定即恒定显示，粒子随鼓点律动、歌词点阵自适应字号。",
+    desc: "30+ 套全屏可视化特效（含数学函数散点曲线、棱镜彩虹、极光·星空、歌词点阵、怀旧 CRT 电视、行星齿轮系等），左上角一键退出，顶部胶囊显示当前句歌词，左下角常驻歌名与歌手，底部圆点指示当前进度；遥控器选定即恒定显示，粒子随鼓点律动、歌词点阵自适应字号。",
+    tag: "TV / 手机",
+  },
+  {
+    name: "照片墙",
+    desc: "全屏照片轮播可视化：三来源混合（图库 / 外接存储 / Jellyfin），43 种转场效果随机切换，Ken Burns 缓慢推近运镜，可选音频反应（节拍脉冲 / 低频呼吸）；画面适配满屏或完整两种模式，端上人脸检测仅显示含人像照片。",
     tag: "TV / 手机",
   },
   {

@@ -7,6 +7,131 @@
 >
 > 类型：`Added`（新增） | `Changed`（变更） | `Fixed`（修复） | `Removed`（移除）
 
+## [v2.37.5] - 2026-09-27
+
+> **修复 MTV 页遥控器焦点无法移到右侧控制按钮**
+
+### Fixed
+
+- **MTV 页遥控器焦点卡在返回按钮**：PlayerView 视频层禁用 Android 视图焦点（不可聚焦+子树全禁/不可点击），进入页焦点落播放/暂停按钮
+
+## [v2.37.4] - 2026-09-27
+
+> **修复照片墙 Jellyfin 照片源获取 0 张**
+
+### Fixed
+
+- **照片墙 Jellyfin 照片源全 0**：扩展名判定改从 Jellyfin `Path` 字段（实际文件路径）取，不再用不带扩展名的 `Name` 字段过滤
+
+## [v2.37.3] - 2026-09-27
+
+> **新增怀旧老电视频谱效果**
+
+### Added
+
+- **怀旧频谱效果**：新增 VINTAGE_TV（怀旧）主题，模拟老式 CRT 电视画面——做旧牛皮纸色背景、黑色歌词、深色纸纹噪点、滚动暗带、文字微抖动、扫描线叠加 4:3 黑边 + 台标 OSD、RGB 色差重影、暗角 + 圆角屏面
+- **怀旧左下角歌曲信息反色模式**：黑带区白字、画面区黑字（分界 = 黑带右缘）
+
+### Changed
+
+- 频谱效果层移除左侧 24dp 内边距，所有效果铺满全屏
+- 怀旧效果隐藏顶部歌词栏，歌词仅在画面中间大字显示（#34322B + 边缘微虚化）
+- 怀旧背景改为做旧牛皮纸色 #DBB98E，噪点随背景变色
+- 怀旧暗角改为按 4:3 画面区定界的平滑渐变（整体颜色平均，仅最外沿有色差）
+
+### Removed
+
+- 怀旧效果移除竖条干扰与雪花爆发（滚动暗带保留）
+
+### Fixed
+
+- 怀旧效果歌词居中定位，并修复长行文字左侧被截断
+- 怀旧效果抖动相位改 dt 累加，修复大时间基数下正弦抖动冻结/跳变
+
+## [v2.37.2] - 2026-09-26
+
+> **齿轮可视化重做：同心嵌套环 → 啮合行星轮系**
+
+### Changed
+
+- **齿轮效果重做**：E33 由同心嵌套环改为行星轮系，太阳轮驱动 2~4 只行星轮，各齿轮绕自身轴心旋转并齿对齿啮合
+
+### Fixed
+
+- **齿轮绕自身轴心自转**：此前所有齿轮整体绕画布中心公转（"齿轮乱跑"），现各齿轮钉在各自轴心上自转
+- **齿轮旋转稳定**：转速改为匀速基座 + 节拍推进，移除高频抖动调速，啮合观感不抖
+
+## [v2.37.1] - 2026-09-25
+
+> **全量代码审查修复：27 条 High + 8 条快修**
+
+### Fixed
+
+- **凭据明文落盘**：NAS 歌曲 streamUrl 含长期凭据（Jellyfin api_key / Subsonic 认证三元组 / 道理鱼 JWT），此前持久化只对网络歌曲置空 streamUrl，NAS 凭据 URL 随队列恢复/最近播放/本地歌单明文写入 DataStore；现仅本地歌曲与 `imported_` 前缀永久直链 stub 保留 streamUrl，其余一律置空
+- **队列页重复歌曲崩溃**：队列允许重复歌曲但 LazyColumn 以 song.id 为 key，重复即"Key was already used"崩溃；队列页与歌单管理页 key 改拼 index
+- **手机竖屏电台页布局越界**：单列网格配硬编码 GridItemSpan(2) 导致测量游标不前进，改 GridItemSpan(maxLineSpan)
+- **删除歌单误触**：「移除」按钮实际删除整个歌单且无确认；改「删除歌单」文案 + ConfirmDialog 二次确认（破坏性操作默认聚焦取消）
+- **下载崩溃恢复"僵尸完成"记录**：恢复分支只回写 status/progress 三列不写 audioPath，导致离线播放 miss 且永远无法重下；改整体 upsert（含 audioPath/fileSize/completedAt）
+- **导出进度与失败态到不了 UI**：SongExporter 私有 state 的 Running/NO_SPACE/NOTHING_TO_EXPORT 此前从不转发 ExportCoordinator；新增 onStateChanged 回调桥接
+- **百度内嵌封面静默 403**：APIC 提取用裸 dlink 无 access_token（侧车封面与歌词链路已修此处漏网），补 ensureAccessToken
+- **播放解析竞态三处**：PlaybackService 后台解析回写前校验队列一致性；playQueue/resolveAndPlayCurrentSong/updateRestoredQueueStreamUrls 接入 resolveGeneration 代数守卫（等长变更不再被旧快照回滚）
+- **9 ViewModel 生命周期**：9 个子 VM 不在 ViewModelStore、onCleared 永不触发——VisualizerViewModel 清理逻辑提取到 dispose()，由 MainViewModel.onCleared 统一驱动（照片墙/人脸扫描 ORT session 释放），MainActivity 真退出时断开 launcher 闭包
+- **可视化修复**：MoleculeRenderer 键上光点相位改 dt 累加（原 now×实时系数违反本类红线，长时间运行光点随机闪跳）；MilkdropRenderer 重入 onEnter 前显式 recycle 旧双缓冲（约 7.4MB/次，API 22-25 native 堆延迟回收）
+- **UI 主线程 IO 三连**：缓存设置页目录大小改 LaunchedEffect+IO 计算（原组合期全树遍历）；UnifiedSongRow 封面提取改 remember 缓存 + EmbeddedCoverExtractor 负结果 missCache（原每次重组重复读文件头）；JamendoTab 滚 LazyListState 改 rememberLazyListState（滚动位置被重组重置）
+- **手机触摸 seek 失效**：PlayerControls pointerInput 内把 rememberUpdatedState 委托到冻结进局部 val，首组合 durationMs=0 时点击/拖动进度条永久失效；改手势回调内动态读取
+- **SongList 分页冻结**：derivedStateOf 以 key 捕获首次组合快照，分页触发条件用旧值；改 remember key
+- **密码明文上屏**：TextInputDialog 的 masked 只在自制键盘分支生效，系统 IME 分支（手机端默认）无 visualTransformation；补 PasswordVisualTransformation + Password 键盘
+- **并发修补**：MainViewModel 专辑/艺术家封面缓存换 ConcurrentHashMap（IO 与 Default 读）；SmartRadioManager 三处锁外 playedIds 快照移入 stateLock（CME）；MvPersistentCache.save 整体加锁（并发写 .tmp 损坏 JSON）
+- **竖屏设置页**：刷新备份列表的 LaunchedEffect key 改 activeSection → displaySection（竖屏下 activeSection 恒为 GENERAL，手机进"数据管理"永不刷新）
+- **竖屏歌曲信息弹层**：PortraitInfoOverlay 注册 RegisterDialogBackHandler（此前 BACK 穿透而非关闭弹层）
+
+**09-26 复审补修（两条阻断 + 建议项）**：
+
+- **NAS 歌队列播放恢复**：playQueue 的 needsResolve 从 NAS 分支，resolvedFirst 从 NAS getSongsByIds 重建分支（strip 后 NAS 歌空 URI 静默不播的回归）
+- **遥控删除队列项线程安全**：removeFromQueue 改 mainHandler.post 投递（对齐另三个队列回调）
+- **解析取消竞态补丁**：resolveStreamUrlWithoutUi 的 cancel 前移到提前 return 之前（被取消 job 的 isActive 守卫不再回落到 index 重解析）
+- **音质档重播守卫**：replayCurrentWithQuality 回写前重读当前歌曲比较 id，切歌则丢弃
+- **清理线**：VisualizerViewModel.dispose 取消 faceScanObserver；MainActivity 真退出置空 exportCoordinator.treePickLauncher；导出二次触发不再清在跑回调；MvPersistentCache.clear 纳入 saveLock；WaterfallRenderer 退出 recycle 双缓冲；缓存设置页清理后即时刷新尺寸；删死键 mine_remove_song
+
+## [v2.37.0] - 2026-09-23
+
+> **照片墙：三来源照片全屏轮播可视化 · 43 种转场 + 端上人脸检测**
+
+### Added
+
+- **照片墙可视化**：全新可视化主题，把照片变成全屏轮播的「听歌背景」。三个来源独立开关混合轮播：手动**图库**（Android 13+ 分区存储授权）、**外接存储**（U 盘 / SD 卡，SAF 导入，电视上插上即用）、**Jellyfin** 照片库（复用既有 NAS 连接，无需新配置）
+- **43 种转场效果**：淡入 / 滑动 / 缩放 / 遮罩形状 / 分块 / 溶解 / 光效 / 风格化八大类；默认**随机抽取**且避免连续重复（一轮内不重样）；也可在设置里固定某一种
+- **照片切换节奏**：停留时长可调（默认 8 秒），转场时长可调（默认 0.7 秒基准 × 各效果自身节奏）
+- **停留期运镜**：Ken Burns 缓慢推近（缩放 1.00→1.08 + 平移，默认开）；可选音频反应：随节拍脉冲、随低频呼吸（默认关，不卡节拍）
+- **低画质档可用**：照片墙不再被画质档门控挡住，老设备自动降级（RGB_565 + 解码长边 1280）后仍可使用
+- **画面适配**：「满屏」（裁切铺满）「完整」（留黑边内接）两种模式，电视与手机共用
+- **解码缓冲**：按画布尺寸降采样、上限 3 张缓存、低画质档 RGB_565 降级（防御性实现）；解码目标长 2048px 安全阀防 OOM
+- **仅显示含人像**：端上 YuNet 人脸检测（ONNX Runtime，220×320 缩略图推理，数据不出设备）；后台分片扫描、可中断可续跑；独立结果库 `photo_face.db`（不随音乐库迁移）；拔盘不清表，重插 U 盘结果仍有效。低画质档自动置空
+- **照片墙设置面板**：9 项设置集中管理（来源开关 / 目录选择 / 转场 / 画面 / 人脸），含部分授权提示、「重新选择照片」、目录失效自动清理、照片数实时统计与「重新扫描」
+- **权限与授权体验**：Android 14+「仅选择照片」三态正确识别（不误判为拒绝），授权只在打开图库开关时请求，拒绝自动回弹并在设置页给出原因
+
+### Fixed
+
+- **照片墙竖版照片铺不满屏幕**：新图的裁切比例按上一张的尺寸算（两图宽高比不同时竖版图被按横版裁、或露出一条黑边），且整个停留期都按错误比例显示；现在每张图按自己的尺寸计算，入场动画也正常归位
+- **照片墙部分转场的终帧没显示新图**：「故障风」最后 5% 与整个停留期显示的是上一张照片；菱形 / 五角星 / 六边形光圈的终态盖不满画布（四角露出上一张）；「星形展开」画出来的是扁五边形而不是五角星
+- **照片墙设置里「合并后（去重）」的数字含义**：该行实际显示的是人脸过滤后的张数（开着「仅显示含人像」时会比去重后少很多，看起来像去重丢了照片）；现在它显示去重后的总数（与三个分来源相加一致），人脸过滤后的实际张数单独一行显示
+- **照片墙「画面适配」只显示「满屏」**：并排的选项按钮被前一个撑满整行挤没了（「完整」不显示，转场选项同样每行只剩第一个）；现在每个选项按文字宽度排列
+- **启动崩溃修复**：部分情况下 App 启动即闪退（构造期后台协程抢跑读到未初始化状态）；现在合并协程会等待界面构造完成后再执行
+- **外接存储挂载事件 API 22 短路**：`StorageMonitor` 在老系统上挂载 / 拔盘回调中断的问题（同时修复电视上 USB 音乐扫不到的既有缺陷）
+
+## [v2.36.7] - 2026-09-23
+
+> **手机竖屏全屏沉浸式播放页 + 逐字歌词折行推进修复**
+
+### Added
+
+- **手机竖屏全屏沉浸式播放页**：竖屏播放页点击封面进入。上方封面按宽度铺满 16:9 等比（`ContentScale.Crop`，非方形图不变形），下沿「虚化副屏 + 渐黑」带，**左对齐**显示歌曲名（白色粗体）与艺术家（主题色）；下方整块纯黑显示歌词，**支持长按激活跳转**；最底部一条 2dp 细线只显示播放进度、不做进度控制。退出：点击封面 / 左上角「×」/ 系统 BACK
+
+### Fixed
+
+- **设置「关于」页长值把标签挤没**：标签与值改为 1 : 1.5 分配宽度，长值在右栏内换行且恒右对齐，标签在任何字号 / 屏幕形态下都保持可见（`AboutRow`）
+- **逐字歌词折行时高亮「倒带」**：一句歌词被排成 2~3 个可视行时，高亮边界不再从第一折行末端向左回退——行尾字符改用本行右缘作插值终点，并保证边界像素单调不回退，实现「完整走完第一折行再走第二折行」。手机竖屏 / 横屏 / TV / K 歌页共用同一渲染组件，一并修复
+
 ## [v2.36.6] - 2026-09-22
 
 > **手机竖屏歌词跳转改长按激活（手势冲突修复）**

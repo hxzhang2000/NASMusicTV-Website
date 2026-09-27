@@ -12,7 +12,9 @@ import {
   APK_FILE_NAME,
   APK_RELEASES_LATEST,
   APK_VERSION,
+  CHANGELOG_RANGE,
   faqs,
+  recentChangelog,
   site,
 } from "../data/site";
 
@@ -110,27 +112,26 @@ export default function DownloadPage() {
                 <span className="pill">通用安装包 · 全架构合一</span>
                 <span className="pill">覆盖安装，播放数据自动保留</span>
               </div>
-              {__APP_CHANGELOG_LATEST__.sections.length > 0 && (
+              {recentChangelog.length > 0 && (
                 <div className="apk-changelog">
                   <div className="apk-changelog-title">
-                    {__APP_CHANGELOG_LATEST__.version} 更新内容
-                    {__APP_CHANGELOG_LATEST__.date && (
-                      <span className="apk-changelog-date">{__APP_CHANGELOG_LATEST__.date}</span>
-                    )}
+                    {CHANGELOG_RANGE} 更新摘要
                   </div>
-                  {__APP_CHANGELOG_LATEST__.summary && (
-                    <div className="apk-changelog-summary">{__APP_CHANGELOG_LATEST__.summary}</div>
-                  )}
-                  {__APP_CHANGELOG_LATEST__.sections.map((sec) => (
-                    <div className="apk-changelog-section" key={sec.label}>
-                      <span className="apk-changelog-label">{sec.label}</span>
-                      <ul>
-                        {sec.items.map((item, i) => (
-                          <li key={i}>{item}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
+                  <div className="apk-changelog-list">
+                    {recentChangelog.map((entry) => (
+                      <div
+                        className={`apk-changelog-item${entry.highlight ? " apk-changelog-item--highlight" : ""}`}
+                        key={entry.version}
+                      >
+                        <div className="apk-changelog-header">
+                          <span className="apk-changelog-version">{entry.version}</span>
+                          <span className="apk-changelog-date">{entry.date}</span>
+                          {entry.highlight && <span className="apk-changelog-badge">NEW</span>}
+                        </div>
+                        <div className="apk-changelog-summary">{entry.summary}</div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
