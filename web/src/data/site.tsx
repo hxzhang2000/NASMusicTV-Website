@@ -35,12 +35,12 @@ export const site = {
  * 发新版本时只需两步：
  *   1. 把新 APK 放进仓库根目录的 download/，文件名随版本号变化
  *      （如 NASMusicTV-release-v2-36-5.apk -> NASMusicTV-release-v2-37-0.apk），删掉旧文件；
- *   2. 更新下面这一处 APK_VERSION（"v2.36.5" -> "v2.37.5"）。
+ *   2. 更新下面这一处 APK_VERSION（"v2.37.5" -> "v2.38.2"）。
  * 文件名、下载直链与页面展示的版本号都会自动同步，无需改其他代码。
  * 下载页「更新内容」来自应用仓库 CHANGELOG.md：构建时优先读 ../NASMusicTV/CHANGELOG.md，
  * Docker / CI 无应用仓库时回落到 web/src/data/appChangelog.md 快照（更新应用 CHANGELOG 后记得刷新快照）。
  */
-export const APK_VERSION = "v2.37.5";
+export const APK_VERSION = "v2.38.2";
 
 /**
  * 下载页「版本说明」：从上一个大版本到当前最新版的核心更新摘要。
@@ -55,17 +55,15 @@ export interface RecentChangelogEntry {
 }
 
 export const recentChangelog: RecentChangelogEntry[] = [
+  { version: "v2.38.2", date: "10-04", summary: "新增可视化效果「海边」（俯拍岸线频谱，浪涌上沙滩、退水留湿痕），并移除 9 个效果；效果库由 30 套精简为 21 套", highlight: true },
+  { version: "v2.38.1", date: "10-02", summary: "应用内音量：0–100% 应用级增益，独立于系统音量，设置页与播放页均可调节，跨曲自动交叉淡入淡出" },
+  { version: "v2.38.0", date: "10-01", summary: "可视化质感升级：新增可视化画质三档（低/中/高）、第 21 套效果「星空星轨」、600ms 交叉淡入切换、实时帧率读数", highlight: true },
+  { version: "v2.37.6", date: "09-29", summary: "精简可视化效果库：新增「DNA 双螺旋」与 3D「世界地球」，移除 11 个效果与麦克风权限申请", highlight: true },
   { version: "v2.37.5", date: "09-27", summary: "修复 MTV 页遥控器焦点卡在返回按钮" },
-  { version: "v2.37.4", date: "09-27", summary: "修复照片墙 Jellyfin 源返回 0 张照片" },
-  { version: "v2.37.3", date: "09-27", summary: "新增怀旧 CRT 电视频谱效果（牛皮纸背景、扫描线、RGB 色差、4:3 黑边+台标）", highlight: true },
-  { version: "v2.37.2", date: "09-26", summary: "齿轮可视化重做（同心嵌套环 → 行星轮系，太阳轮驱动行星轮齿对齿啮合）", highlight: true },
-  { version: "v2.37.1", date: "09-25", summary: "全量代码审查修复（27 High + 8 快修）：凭据明文落盘、队列崩溃、电台布局越界、删除歌单误触、下载崩溃恢复、百度封面 403、播放解析竞态、ViewModel 生命周期、UI 主线程 IO、触摸 seek 失效、分页冻结、密码明文、并发修补等" },
-  { version: "v2.37.0", date: "09-23", summary: "照片墙可视化（三来源图库/外接/Jellyfin、43 种转场、Ken Burns 运镜、端上人脸检测、设置面板）", highlight: true },
-  { version: "v2.36.7", date: "09-23", summary: "手机竖屏全屏沉浸式播放页 + 关于页布局修复 + 逐字歌词折行修复" },
 ];
 
-/** 下载页「版本说明」标题范围：v2.36.6 → v2.37.5 */
-export const CHANGELOG_RANGE = "v2.36.6 → v2.37.5";
+/** 下载页「版本说明」标题范围：v2.37.5 → v2.38.2 */
+export const CHANGELOG_RANGE = "v2.37.5 → v2.38.2";
 
 /** 由版本号推导 APK 文件名：v2.36.5 -> NASMusicTV-release-v2-36-5.apk（点号转连字符） */
 export const APK_FILE_NAME = `NASMusicTV-release-${APK_VERSION.replace(/\./g, "-")}.apk`;
@@ -79,7 +77,7 @@ export const APK_RELEASES_LATEST = `${site.repo}/releases/latest`;
 export const stats = [
   { value: "5", label: "NAS 后端支持" },
   { value: "4", label: "音乐源并行搜索" },
-  { value: "30+", label: "可视化特效" },
+  { value: "21", label: "可视化特效" },
   { value: "1", label: "APK 双端通用" },
 ];
 
@@ -112,7 +110,7 @@ export const highlights: Highlight[] = [
   {
     key: "visualizer",
     title: "可视化特效库",
-    desc: "30+ 套全屏特效：数学曲线、棱镜彩虹、极光星空、歌词点阵、怀旧 CRT 电视、行星齿轮系，遥控器即时切换。",
+    desc: "21 套全屏特效：歌词点阵、怀旧 CRT 电视、行星齿轮系、太阳系轨道、3D 世界地球、DNA 双螺旋、星空星轨、俯拍岸线「海边」，遥控器即时切换。",
     icon: <PictureOutlined />,
   },
   {
@@ -278,7 +276,7 @@ export const featureModules: FeatureModule[] = [
       "队列页布局：右侧「播放队列」大标题 + 曲目计数与「清空」按钮，左侧固定当前曲目大封面卡（下方居中显示歌名）",
       "队列行信息：序号、歌名、歌手、来源 / 状态标签（「已下载」蓝青 /「网络」绿色）、0:00 时长与行内下载 ↓ / 上移 ↑ / 移除 × 操作",
       "均衡器：预设方案 + 频段增益调节",
-      "可视化舞台：30+ 套特效（数学函数曲线、棱镜彩虹、极光·星空、歌词点阵、怀旧 CRT 电视、行星齿轮系等），左右键即时切换，遥控器选哪个就恒定显示哪个；全屏只留左上角退出、顶部胶囊歌词、左下角歌名歌手与底部进度圆点，歌词点阵自适应字号，粒子随鼓点律动",
+      "可视化舞台：21 套特效（歌词点阵、怀旧 CRT 电视、行星齿轮系、太阳系轨道、3D 世界地球、DNA 双螺旋、星空星轨、俯拍岸线「海边」等），支持低 / 中 / 高三档画质，左右键即时切换，遥控器选哪个就恒定显示哪个；全屏只留左上角退出、顶部胶囊歌词、左下角歌名歌手与底部进度圆点，歌词点阵自适应字号，粒子随鼓点律动",
       "人声消除：实时分离人声与伴奏，K 歌背景音乐完整不塌方",
       "升降调 / 播放速度：播放页可调，K 歌时配合伴奏与节奏",
       "歌曲详情面板：码率、采样率、编码格式悬浮展示",
@@ -420,7 +418,7 @@ export const screens: Screen[] = [
   },
   {
     name: "可视化舞台",
-    desc: "30+ 套全屏可视化特效（含数学函数散点曲线、棱镜彩虹、极光·星空、歌词点阵、怀旧 CRT 电视、行星齿轮系等），左上角一键退出，顶部胶囊显示当前句歌词，左下角常驻歌名与歌手，底部圆点指示当前进度；遥控器选定即恒定显示，粒子随鼓点律动、歌词点阵自适应字号。",
+    desc: "21 套全屏可视化特效（歌词点阵、怀旧 CRT 电视、行星齿轮系、太阳系轨道、3D 世界地球、DNA 双螺旋、星空星轨、俯拍岸线「海边」等），支持低 / 中 / 高三档画质，左上角一键退出，顶部胶囊显示当前句歌词，左下角常驻歌名与歌手，底部圆点指示当前进度；遥控器选定即恒定显示，粒子随鼓点律动、歌词点阵自适应字号。",
     tag: "TV / 手机",
   },
   {
@@ -475,7 +473,7 @@ export const screens: Screen[] = [
   },
   {
     name: "关于页",
-    desc: "左侧设置导航（缓存管理 / 网络检测 / 网盘 / 数据管理 / 关于）与右侧青绿「关于」大标题，信息表逐行左标签右值：应用名称 NAS Music TV、版本 v2.32.5、构建类型 release、开源协议 GPL v3、支持后端 Jellyfin / Navidrome / Subsonic / 道理鱼 / 飞牛，运行时可查看后端真实 API 版本号与连接状态。",
+    desc: "左侧设置导航（缓存管理 / 网络检测 / 网盘 / 数据管理 / 关于）与右侧青绿「关于」大标题，信息表逐行左标签右值：应用名称 NAS Music TV、版本 v2.38.2、构建类型 release、开源协议 GPL v3、支持后端 Jellyfin / Navidrome / Subsonic / 道理鱼 / 飞牛，运行时可查看后端真实 API 版本号与连接状态。",
     tag: "TV / 手机",
   },
   {
