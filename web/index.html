@@ -29,6 +29,40 @@
       name="twitter:image"
       content="/screens/01-dashboard.jpg"
     />
+    <!--
+      百度统计（hm.js）：全站唯一埋点入口。
+      本项目是 React Router SPA，页面切换不触发整页加载，hm.js 默认只上报首屏 PV，
+      因此额外加载官方 UrlChangeTracker 插件监听 pushState / popstate，按路由上报 PV。
+
+      注意事项：
+      1. _requirePlugin 全站只能调用一次，多余调用无效。
+      2. 不要在百度统计后台再开启「管理 → 单页应用设置」，否则会重复上报。
+      3. UrlChangeTracker 故意不采集 replaceState。本项目目前所有跳转均为 pushState
+         （router.tsx 无 replace / <Navigate replace>），若将来引入 replace 跳转需改为
+         手动 _trackPageview 上报。
+    -->
+    <script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src =
+          "https://hm.baidu.com/hm.js?dedffde230c3027148520cf301ea680b";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+      // SPA 路由变更跟踪（官方文档：
+      // https://tongji.baidu.com/web/help/article?id=324&type=0）
+      _hmt.push([
+        "_requirePlugin",
+        "UrlChangeTracker",
+        {
+          shouldTrackUrlChange: function (newPath, oldPath) {
+            // 忽略仅 query/hash 变化（如 ?from=xxx），避免重复 PV
+            return newPath && oldPath && newPath.split("?")[0] !== oldPath.split("?")[0];
+          },
+        },
+      ]);
+    </script>
   </head>
   <body>
     <div id="root"></div>
