@@ -39,7 +39,7 @@ const devices = [
   {
     icon: <MobileOutlined />,
     title: "手机",
-    desc: "直接下载 APK 点击安装；首次启动按提示加入电池优化白名单，保证后台播放稳定。",
+    desc: "直接下载 APK 点击安装即可，无需额外权限；本地音乐在设置页「本地音乐」分区按需开启。",
   },
   {
     icon: <TabletOutlined />,

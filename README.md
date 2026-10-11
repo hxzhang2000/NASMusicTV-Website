@@ -2,7 +2,7 @@
 
 NAS Music TV 的**官方网站**（落地页）。一个纯前端的单页站点，用于介绍这款开源的 Android 多源音乐播放器（TV / 手机 / 平板通用）：聚合 NAS、网络音乐与百度网盘多音乐源，支持逐字卡拉OK歌词、K 歌伴奏、MTV、天气电台等电视专属体验。
 
-> 本仓库只托管**官网前端**，源码位于 [`hxzhang2000/NASMusicTV-Website`](https://github.com/hxzhang2000/NASMusicTV-Website)。Android 应用本体在 [`hxzhang2000/NASMusicTV`](https://github.com/hxzhang2000/NASMusicTV)，下载 APK 请前往该仓库的 Releases。
+> 本仓库只托管**官网前端**，源码位于 [`hxzhang2000/NASMusicTV-Website`](https://github.com/hxzhang2000/NASMusicTV-Website)。Android 应用本体在 [`hxzhang2000/NASMusicTV`](https://github.com/hxzhang2000/NASMusicTV)。官网「下载安装」页提供最新版通用 APK 的站内直链（构建时从仓库根 `download/` 拷入 `dist/download/` 随站点发布），历史版本见该仓库的 Releases。
 
 [![Release](https://img.shields.io/github/v/release/hxzhang2000/NASMusicTV?color=blue&label=App%20Release)](https://github.com/hxzhang2000/NASMusicTV/releases)
 [![Website](https://img.shields.io/badge/website-repo-00d4aa?logo=github)](https://github.com/hxzhang2000/NASMusicTV-Website)
@@ -23,7 +23,7 @@ NAS Music TV 的**官方网站**（落地页）。一个纯前端的单页站点
 
 ## 功能特性（站点本身）
 
-- **5 个路由页**：首页（`/`，含 Hero、统计、Highlights、功能模块、TV 界面 mockup、CTA）、功能特性（`/features`，锚点导航 + 15 大模块）、界面预览（`/screens`）、下载安装（`/download`，架构选择 + FAQ）、关于项目（`/about`，版本/开源协议/API 清单）。
+- **5 个路由页**：首页（`/`，含 Hero、统计、Highlights、功能模块、TV 界面 mockup、CTA）、功能特性（`/features`，锚点导航 + 15 大模块）、界面预览（`/screens`）、下载安装（`/download`，通用 APK 站内直链 + 最新版本卡 + 安装说明 + FAQ）、关于项目（`/about`，版本/开源协议/API 清单）。
 - **深色沉浸设计系统**：统一的青绿品牌色（`#00D4AA`）、等宽大字统计、卡片悬浮焦点态，色板与组件全部收敛在 `web/src/styles/` 下。
 - **纯 CSS 界面 mockup + 内联 SVG 图标**：首页 TV 界面预览与全部图标均为手写 CSS / SVG，**首屏零图片与零图标字体请求**。
 - **响应式**：桌面 / 平板 / 手机三档断点（1024 / 720 / 1279 / 767px），手机端导航折叠为汉堡菜单，小字放大到 ≥15px 保证可读性。
@@ -40,11 +40,13 @@ NASMusicTV-Website/
 ├── docker-compose.yml    # web 服务编排（部署平台用）
 ├── deploy/
 │   └── app.conf          # nginx 配置（SPA 回退 + gzip + 健康检查）
+├── download/             # 最新版 APK（构建时自动拷入 dist/download/，供站内直链下载）
+├── dist/                 # 构建产物（由 web/dist 复制而来）
 ├── db/                   # 占位（本仓库无后端数据库）
 └── web/                  # 官网前端工程
     ├── index.html        # 入口 + SEO meta（og:image / twitter:image）
-    ├── vite.config.ts
-    ├── package.json
+    ├── vite.config.ts    # 版本注入 + APK 拷贝 + 应用 CHANGELOG 解析
+    ├── package.json      # 网站版本唯一来源（version 字段）
     ├── public/screens/   # 界面截图清单（index.json / urls.txt）
     ├── scripts/          # fetch-screenshots.sh / place-screenshots.sh
     └── src/
@@ -56,8 +58,9 @@ NASMusicTV-Website/
         │   ├── Screenshot.tsx    # 截图位组件（TV/手机切换、空帧降级）
         │   └── TvIcons.tsx       # 内联 SVG 图标集
         ├── data/
-        │   ├── site.tsx          # 站点文案（highlights / featureModules / screens / faqs / apiVersions）
-        │   └── screenshots.ts    # 截图槽位清单与解析逻辑
+        │   ├── site.tsx          # 站点文案（highlights / featureModules / screens / faqs / apiVersions / APK_VERSION）
+        │   ├── screenshots.ts    # 截图槽位清单与解析逻辑
+        │   └── appChangelog.md   # 应用 CHANGELOG 快照（Docker/CI 构建时回落到此）
         ├── hooks/
         │   └── useScreenshots.ts # 清单优先 / 逐张探测兜底
         ├── pages/        # HomePage / FeaturesPage / ScreensPage / DownloadPage / AboutPage
@@ -125,6 +128,18 @@ bash web/scripts/fetch-screenshots.sh
 
 ---
 
+## APK 直链管理
+
+下载页、首页 Hero、顶栏与关于页的下载按钮全部指向站内直链 `/download/<APK 文件名>`，不绕跳 GitHub：
+
+1. 把应用新版本的 APK 放进仓库根目录 `download/`，删掉旧文件（文件名形如 `NASMusicTV-release-v2-38-7.apk`）。
+2. 修改 `web/src/data/site.tsx` 里的 `APK_VERSION`（当前 `v2.38.7`）——APK 文件名、下载直链、页面展示版本号都由它自动推导。
+3. 构建时 Vite 插件会把 `download/*.apk` 拷进 `dist/download/` 随站点发布；dev server 同样以 `/download/` 提供（只服务纯 `.apk` 文件名，防路径穿越）。
+
+下载页的「更新摘要」来自应用仓库 `CHANGELOG.md` 的最新一节：本地构建优先读 `../NASMusicTV/CHANGELOG.md`，Docker / CI 环境回落 `web/src/data/appChangelog.md` 快照——**应用发版后记得刷新该快照**（直接复制应用仓库的 `CHANGELOG.md` 覆盖即可）。
+
+---
+
 ## 部署（Docker）
 
 ```bash
@@ -157,6 +172,6 @@ docker run --rm -p 8080:80 nasmtv-web
 
 ## 版本
 
-- 网站有**独立于 Android 应用**的版本号，唯一来源是 `web/package.json` 的 `version` 字段（当前 `1.0.2`）。
+- 网站有**独立于 Android 应用**的版本号，唯一来源是 `web/package.json` 的 `version` 字段（当前 `1.0.4`）。
 - 升级版本只需 `npm version <patch|minor|major>` 或手动修改该字段，重新构建后界面（页脚 + 关于页）会自动同步，无需改代码。
 - 版本号与构建时间由 Vite 在构建时注入（`web/src/version.ts` → `SITE_VERSION` / `SITE_BUILD_TIME`）。
