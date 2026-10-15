@@ -132,8 +132,8 @@ bash web/scripts/fetch-screenshots.sh
 
 下载页、首页 Hero、顶栏与关于页的下载按钮全部指向站内直链 `/download/<APK 文件名>`，不绕跳 GitHub：
 
-1. 把应用新版本的 APK 放进仓库根目录 `download/`，删掉旧文件（文件名形如 `NASMusicTV-release-v2-38-7.apk`）。
-2. 修改 `web/src/data/site.tsx` 里的 `APK_VERSION`（当前 `v2.38.7`）——APK 文件名、下载直链、页面展示版本号都由它自动推导。
+1. 把应用新版本的 APK 放进仓库根目录 `download/`，删掉旧文件（文件名形如 `NASMusicTV-release-v2-38-11.apk`）。
+2. 修改 `web/src/data/site.tsx` 里的 `APK_VERSION`（当前 `v2.38.11`）——APK 文件名、下载直链、页面展示版本号都由它自动推导。
 3. 构建时 Vite 插件会把 `download/*.apk` 拷进 `dist/download/` 随站点发布；dev server 同样以 `/download/` 提供（只服务纯 `.apk` 文件名，防路径穿越）。
 
 下载页的「更新摘要」来自应用仓库 `CHANGELOG.md` 的最新一节：本地构建优先读 `../NASMusicTV/CHANGELOG.md`，Docker / CI 环境回落 `web/src/data/appChangelog.md` 快照——**应用发版后记得刷新该快照**（直接复制应用仓库的 `CHANGELOG.md` 覆盖即可）。
@@ -172,6 +172,6 @@ docker run --rm -p 8080:80 nasmtv-web
 
 ## 版本
 
-- 网站有**独立于 Android 应用**的版本号，唯一来源是 `web/package.json` 的 `version` 字段（当前 `1.0.4`）。
+- 网站有**独立于 Android 应用**的版本号，唯一来源是 `web/package.json` 的 `version` 字段（当前 `1.0.5`）。
 - 升级版本只需 `npm version <patch|minor|major>` 或手动修改该字段，重新构建后界面（页脚 + 关于页）会自动同步，无需改代码。
 - 版本号与构建时间由 Vite 在构建时注入（`web/src/version.ts` → `SITE_VERSION` / `SITE_BUILD_TIME`）。
