@@ -15,6 +15,7 @@ const NAV = [
   { path: "/", label: "首页" },
   { path: "/features", label: "功能特性" },
   { path: "/screens", label: "界面预览" },
+  { path: "/effects", label: "特效图集" },
   { path: "/download", label: "下载安装" },
   { path: "/about", label: "关于项目" },
 ];
@@ -115,6 +116,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <div className="footer-links">
                 <Link to="/features">功能特性</Link>
                 <Link to="/screens">界面预览</Link>
+                <Link to="/effects">特效图集</Link>
                 <Link to="/download">下载安装</Link>
                 <Link to="/about">关于项目</Link>
               </div>

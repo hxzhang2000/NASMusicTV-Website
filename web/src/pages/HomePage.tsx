@@ -510,22 +510,34 @@ export default function HomePage() {
           </div>
 
           <div className="tv-grid tv-grid-4">
-            {highlights.map((h, i) => (
-              <div
-                className="tv-card tv-reveal"
-                key={h.key}
-                style={{ transitionDelay: `${(i % 4) * 80}ms` }}
-                tabIndex={0}
-              >
-                <div className="tv-card-icon">
-                  <TvIcon name={HIGHLIGHT_ICONS[h.key] ?? "spark"} size={28} />
+            {highlights.map((h, i) => {
+              const cardClass = "tv-card tv-reveal";
+              const cardStyle = { transitionDelay: `${(i % 4) * 80}ms` };
+              const body = (
+                <>
+                  <div className="tv-card-icon">
+                    <TvIcon name={HIGHLIGHT_ICONS[h.key] ?? "spark"} size={28} />
+                  </div>
+                  <h3 className="tv-card-title">{h.title}</h3>
+                  <p className="tv-card-desc" title={h.desc}>
+                    {h.desc}
+                  </p>
+                  {h.key === "visualizer" && (
+                    <span className="tv-card-more">查看特效图集 →</span>
+                  )}
+                </>
+              );
+              /* 「可视化特效库」整卡即入口，跳转到特效图集页 */
+              return h.key === "visualizer" ? (
+                <Link to="/effects" className={cardClass} style={cardStyle} key={h.key} tabIndex={0}>
+                  {body}
+                </Link>
+              ) : (
+                <div className={cardClass} style={cardStyle} key={h.key} tabIndex={0}>
+                  {body}
                 </div>
-                <h3 className="tv-card-title">{h.title}</h3>
-                <p className="tv-card-desc" title={h.desc}>
-                  {h.desc}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

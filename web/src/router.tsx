@@ -4,6 +4,7 @@ import Layout from "./components/Layout";
 import HomePage from "./pages/HomePage";
 import FeaturesPage from "./pages/FeaturesPage";
 import ScreensPage from "./pages/ScreensPage";
+import EffectsPage from "./pages/EffectsPage";
 import DownloadPage from "./pages/DownloadPage";
 import AboutPage from "./pages/AboutPage";
 
@@ -13,6 +14,7 @@ export const router = createBrowserRouter([
   { path: "/", element: wrap(<HomePage />) },
   { path: "/features", element: wrap(<FeaturesPage />) },
   { path: "/screens", element: wrap(<ScreensPage />) },
+  { path: "/effects", element: wrap(<EffectsPage />) },
   { path: "/download", element: wrap(<DownloadPage />) },
   { path: "/about", element: wrap(<AboutPage />) },
   { path: "*", element: wrap(<HomePage />) },
