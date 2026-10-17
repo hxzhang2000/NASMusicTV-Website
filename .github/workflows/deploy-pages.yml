@@ -1,0 +1,57 @@
+name: 部署到 GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同一时间只跑一次发布，新构建排队而不是互相覆盖
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      # Pages 项目站点跑在 https://<user>.github.io/<仓库名>/ 子路径下；
+      # 根域名部署（NAS / Docker）不需要该变量，Vite 默认 base 为 "/"
+      VITE_BASE: /${{ github.event.repository.name }}/
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: 构建站点
+        working-directory: web
+        run: |
+          npm ci
+          npm run build
+
+      # GitHub Pages 没有 try_files 回退：深链（/download 等）命中未知路径时
+      # 由自定义 404 页面接管，内容与 index.html 一致，React Router 照常渲染。
+      - name: 生成 SPA 回退页
+        run: cp dist/index.html dist/404.html
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

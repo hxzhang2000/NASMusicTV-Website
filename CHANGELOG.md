@@ -10,8 +10,12 @@
 
 ## [Unreleased]
 
+### Added
+- 新增 GitHub Pages 发布工作流 `.github/workflows/deploy-pages.yml`：推送 `main` 即构建并部署到项目站点，产物复制 `index.html → 404.html` 承接深链回退（Pages 无 `try_files`），`web/public/.nojekyll` 关闭 Jekyll 处理。
+- 站点支持子路径部署：Vite `base` 由 `VITE_BASE` 注入（默认 `/`，NAS / Docker 产物不变），路由 `basename`、`APK_DOWNLOAD_URL`、`EFFECTS_DIR` 统一跟随 `import.meta.env.BASE_URL`。
+
 ### 待办 / 已知问题
-- （无，已知问题均已在本版清理）
+- `web/index.html` 的 `og:image` 仍是相对路径，社交爬虫取不到分享封面；Pages 子路径下也需绝对 URL 才生效（正式入口建议自建域名后填绝对地址）。
 
 ## [1.0.7] - 2026-10-17
 

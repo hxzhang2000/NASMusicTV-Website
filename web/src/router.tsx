@@ -10,12 +10,18 @@ import AboutPage from "./pages/AboutPage";
 
 const wrap = (node: ReactNode) => <Layout>{node}</Layout>;
 
-export const router = createBrowserRouter([
-  { path: "/", element: wrap(<HomePage />) },
-  { path: "/features", element: wrap(<FeaturesPage />) },
-  { path: "/screens", element: wrap(<ScreensPage />) },
-  { path: "/effects", element: wrap(<EffectsPage />) },
-  { path: "/download", element: wrap(<DownloadPage />) },
-  { path: "/about", element: wrap(<AboutPage />) },
-  { path: "*", element: wrap(<HomePage />) },
-]);
+// BASE_URL 始终以 "/" 结尾；根域名部署时去掉斜杠后为空串，回退到 "/"
+const basename = import.meta.env.BASE_URL.replace(/\/$/, "") || "/";
+
+export const router = createBrowserRouter(
+  [
+    { path: "/", element: wrap(<HomePage />) },
+    { path: "/features", element: wrap(<FeaturesPage />) },
+    { path: "/screens", element: wrap(<ScreensPage />) },
+    { path: "/effects", element: wrap(<EffectsPage />) },
+    { path: "/download", element: wrap(<DownloadPage />) },
+    { path: "/about", element: wrap(<AboutPage />) },
+    { path: "*", element: wrap(<HomePage />) },
+  ],
+  { basename }
+);

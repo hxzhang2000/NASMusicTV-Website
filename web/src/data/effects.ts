@@ -15,8 +15,8 @@ export interface EffectShot {
   name: string;
 }
 
-/** 特效截图目录（站点绝对路径） */
-export const EFFECTS_DIR = "/effects/";
+/** 特效截图目录（相对站点基路径，BASE_URL 始终以 "/" 结尾） */
+export const EFFECTS_DIR = `${import.meta.env.BASE_URL}effects/`;
 
 export const effects: EffectShot[] = [
   { enum: "BEAT_FIREWORK", name: "节拍烟花" },

@@ -130,13 +130,32 @@ bash web/scripts/fetch-screenshots.sh
 
 ## APK 直链管理
 
-下载页、首页 Hero、顶栏与关于页的下载按钮全部指向站内直链 `/download/<APK 文件名>`，不绕跳 GitHub：
+下载页、首页 Hero、顶栏与关于页的下载按钮全部指向站内直链 `<站点基路径>/download/<APK 文件名>`，不绕跳 GitHub：
 
 1. 把应用新版本的 APK 放进仓库根目录 `download/`，删掉旧文件（文件名形如 `NASMusicTV-release-v2-38-15.apk`）。
 2. 修改 `web/src/data/site.tsx` 里的 `APK_VERSION`（当前 `v2.38.15`）——APK 文件名、下载直链、页面展示版本号都由它自动推导。
 3. 构建时 Vite 插件会把 `download/*.apk` 拷进 `dist/download/` 随站点发布；dev server 同样以 `/download/` 提供（只服务纯 `.apk` 文件名，防路径穿越）。
 
 下载页的「更新摘要」来自应用仓库 `CHANGELOG.md` 的最新一节：本地构建优先读 `../NASMusicTV/CHANGELOG.md`，Docker / CI 环境回落 `web/src/data/appChangelog.md` 快照——**应用发版后记得刷新该快照**（直接复制应用仓库的 `CHANGELOG.md` 覆盖即可）。
+
+---
+
+## 部署（GitHub Pages）
+
+推送 `main` 触发 [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml)，产物发布到
+`https://hxzhang2000.github.io/NASMusicTV-Website/`。
+
+首次启用需一次性设置：仓库 **Settings → Pages → Source** 选 **GitHub Actions**（未设置时工作流的部署步骤会失败）。
+
+- Pages 项目站点跑在 `/<仓库名>/` 子路径下，工作流用 `VITE_BASE` 覆盖 Vite 的 `base`；路由 `basename` 与
+  `screens` / `effects` / `download` 的资源路径都由 `import.meta.env.BASE_URL` 推导，换仓库名或改子路径不必改代码。
+- 根域名部署（NAS / Docker）不设 `VITE_BASE`，`base` 仍是 `/`，产物与改动前完全一致。
+- Pages 没有 `try_files` 回退，工作流把 `dist/index.html` 复制成 `dist/404.html` 来承接深链
+  （如 `/NASMusicTV-Website/download`），自定义 404 的内容即站点首页壳，React Router 照常按路径渲染。
+- `web/public/.nojekyll` 随产物输出，关闭 Pages 默认的 Jekyll 处理，避免下划线开头的资源被忽略。
+- 体积：产物约 54 MB（特效图集 22 MB + APK 25 MB + 界面截图 6.8 MB），在 Pages 的 1 GB 站点上限内；
+  若下载直链在海外节点变慢，可把下载按钮改指 Releases 资产而不随站点发布 APK。
+- 已知取舍：`*.github.io` 在中国大陆可达性较差，正式对外入口仍建议用 NAS / Docker 那套，Pages 作为改动预览站。
 
 ---
 

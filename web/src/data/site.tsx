@@ -67,8 +67,8 @@ export const CHANGELOG_RANGE = "v2.38.12 → v2.38.15";
 /** 由版本号推导 APK 文件名：v2.36.5 -> NASMusicTV-release-v2-36-5.apk（点号转连字符） */
 export const APK_FILE_NAME = `NASMusicTV-release-${APK_VERSION.replace(/\./g, "-")}.apk`;
 
-/** APK 站内直链（构建时 download/ 下的 APK 会自动拷贝到 dist/download/ 随站点发布） */
-export const APK_DOWNLOAD_URL = `/download/${APK_FILE_NAME}`;
+/** APK 站内直链（构建时 download/ 下的 APK 会自动拷贝到 dist/download/ 随站点发布；前缀随部署基路径变化） */
+export const APK_DOWNLOAD_URL = `${import.meta.env.BASE_URL}download/${APK_FILE_NAME}`;
 
 /** GitHub 最新 Release 页（始终指向最新发布的版本） */
 export const APK_RELEASES_LATEST = `${site.repo}/releases/latest`;

@@ -175,7 +175,10 @@ function apkDownloadPlugin(): Plugin {
 }
 
 export default defineConfig({
-  base: "/",
+  // 站点基路径：默认 "/"（NAS / Docker 根域名部署）。GitHub Pages 项目站点在
+  // /<仓库名>/ 子路径下，由 CI 用 VITE_BASE 覆盖；BASE_URL 会同步供给路由 basename
+  // 与 screens / effects / download 的资源路径。
+  base: process.env.VITE_BASE ?? "/",
   plugins: [react(), apkDownloadPlugin()],
   define: {
     __APP_VERSION__: JSON.stringify(pkg.version),
