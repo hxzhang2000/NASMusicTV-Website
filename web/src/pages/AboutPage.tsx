@@ -91,7 +91,7 @@ export default function AboutPage() {
                 本项目与上述服务及百度网盘无隶属关系，使用时应遵守各服务方的条款与版权规定。
               </div>
             </div>
-            <div className="card">
+            <div className="card" style={{ gridColumn: "1 / -1" }}>
               <div className="card-icon">
                 <CopyrightOutlined />
               </div>
@@ -101,26 +101,6 @@ export default function AboutPage() {
                 原始版权归原始版权方所有，本应用仅为聚合浏览工具，不存储、分发或转售任何媒体文件，
                 也不对第三方音乐资源的合法性、准确性及可用性承担任何责任。如版权方认为其合法权益受到侵害，
                 请通过 <a href={`${site.repo}/issues`} target="_blank" rel="noreferrer">GitHub Issues</a> 联系我们，我们将及时处理。
-              </div>
-            </div>
-            <div className="card">
-              <div className="card-icon">
-                <ApiOutlined />
-              </div>
-              <div className="card-title">推荐工具</div>
-              <div className="card-desc">
-                <strong>bolt.new</strong> — 在浏览器中直接运行的 AI 全栈开发环境。无需本地配置，
-                输入需求即可生成完整应用并一键部署。适合快速原型验证和学习新技术。
-              </div>
-              <div style={{ marginTop: 18 }}>
-                <a
-                  href="https://bolt.cello.so/baFWRasfV6k"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="cta-primary"
-                >
-                  体验 bolt.new →
-                </a>
               </div>
             </div>
           </div>

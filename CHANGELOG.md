@@ -10,12 +10,20 @@
 
 ## [Unreleased]
 
+### 待办 / 已知问题
+- `web/index.html` 的 `og:image` 仍是相对路径，社交爬虫取不到分享封面；Pages 子路径下也需绝对 URL 才生效（正式入口建议自建域名后填绝对地址）。
+
+## [1.0.8] - 2026-10-17
+
+小版本（patch）：接入 GitHub Pages 发布通道，并移除关于页的「推荐工具」卡片。
+
 ### Added
 - 新增 GitHub Pages 发布工作流 `.github/workflows/deploy-pages.yml`：推送 `main` 即构建并部署到项目站点，产物复制 `index.html → 404.html` 承接深链回退（Pages 无 `try_files`），`web/public/.nojekyll` 关闭 Jekyll 处理。
 - 站点支持子路径部署：Vite `base` 由 `VITE_BASE` 注入（默认 `/`，NAS / Docker 产物不变），路由 `basename`、`APK_DOWNLOAD_URL`、`EFFECTS_DIR` 统一跟随 `import.meta.env.BASE_URL`。
 
-### 待办 / 已知问题
-- `web/index.html` 的 `og:image` 仍是相对路径，社交爬虫取不到分享封面；Pages 子路径下也需绝对 URL 才生效（正式入口建议自建域名后填绝对地址）。
+### Changed
+- 移除关于页「推荐工具」卡片（bolt.new 推广与外链），该组卡片由 4 张减为 3 张；「版权说明」改为横跨两列，避免 2 列网格末行留空。
+- 网站版本号 `web/package.json` 1.0.7 → 1.0.8。
 
 ## [1.0.7] - 2026-10-17
 
